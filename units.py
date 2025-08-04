@@ -6,6 +6,7 @@ class Units:
     def __init__(self, id:int, image_path:str, health:int, damage:int, attackRate:int, speed:int, range:int, side:bool):
         self.id = id
         self.image = pygame.image.load(image_path)
+        self.dead = False
         self.health = health
         self.damage = damage
         self.speed = speed
@@ -22,6 +23,8 @@ class Units:
             self.position += self.card.speed
     def takeDamage(self, amount):
         self.health -= amount
+        if self.health <= 0:
+            self.dead = True
     def attack(self, target):
         self.aCounter += 1
         if self.aCounter % self.attackRate == 0:
@@ -36,4 +39,3 @@ class Units:
                 self.attack(self, enemy)
             else:
                 self.move(self)       
-        
