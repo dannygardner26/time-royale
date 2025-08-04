@@ -8,8 +8,10 @@ class Units:
         self.side = side
         self.card = card
     def update(self):
-        
+        pass
+
     def attack(self):
+        pass
 
     def move(self):
         # check to see enemy or tower

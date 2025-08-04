@@ -2,7 +2,7 @@ import pygame, sys
 from pygame.locals import*
 #i am julius
 pygame.init()
-WIDTH = 500
+WIDTH = 1000
 HEIGHT = 400
 running = True
 clock = pygame.time.Clock()
@@ -13,6 +13,11 @@ back = pygame.Surface((WIDTH, HEIGHT))
 background = back.convert()
 background.fill((255, 255, 255))
 
+healthA = 100
+healthB = 100
+
+# Draw an 8x8 pixel rectangle at position (50, 300)
+pygame.draw.rect(window, (255, 0, 0), (50, 300, 8, 8))
 class Player():
     size = 20
 
@@ -29,19 +34,22 @@ class Player():
 
 player = Player()
 
+card_image = pygame.image.load("assets/images/OIP.webp")
+
 while running:
+    pygame.display.update()
     window.blit(background, (0, 0))
-    pygame.draw.polygon(window, (0, 255, 0), ((146, 0), (291, 106), (236, 277), (56, 277), (0, 106)))
-    pygame.draw.line(window, (0, 0, 255), (60, 60), (120, 60), 4)
-    pygame.draw.line(window, (0, 0, 255), (120, 60), (60, 120))
-    pygame.draw.line(window, (0, 0, 255), (60, 120), (120, 120), 4)
-    basicFont = pygame.font.SysFont(None, 48)
-    text = basicFont.render('Python is cool', True, (23, 23, 29), (255, 255, 255))
-    textRect = text.get_rect()
-    textRect.centerx = window.get_rect().centerx
-    textRect.centery = window.get_rect().centery
-    window.blit(text, textRect)
-    window.blit(player.image, (player.x, player.y))
+    
+    window.blit(card_image, (player.x, player.y))
+    
+      # Draw an 8x8 pixel rectangle at position (50, 300)
+    pygame.draw.rect(window, (255, 0, 0), (50, 300, 8, 8))
+    
+    window.blit(card_image, (50, 300))
+    
+    pygame.display.update()
+    # ...rest of your loop...
+    
     timePassed = clock.tick(30)
     timeSec = timePassed / 1000.0
     player.x += player.move * timeSec
