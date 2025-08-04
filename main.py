@@ -1,6 +1,6 @@
 import pygame, sys
 from pygame.locals import*
-
+#i am julius
 pygame.init()
 WIDTH = 500
 HEIGHT = 400
