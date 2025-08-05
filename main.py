@@ -83,21 +83,21 @@ while running:
             if event.key == pygame.K_1:
                 Friendly.append(units.Units(1, "assets\images\knightframe1.png", 100, 10, 10, 5, 10, False))
             elif event.key == pygame.K_2:
-                Friendly.append(units.Units(1, "assets/images/archersframe1.png", 65, 8, 12, 6, 14, False))            
+                Friendly.append(units.Units(2, "assets/images/archersframe1.png", 65, 8, 12, 6, 100, False))            
             elif event.key == pygame.K_3:
-                Friendly.append(units.Units(1, "assets\images\goblinframe1.png", 50, 5, 15, 15, 8, False))            
+                Friendly.append(units.Units(3, "assets\images\goblinframe1.png", 50, 5, 15, 15, 8, False))            
             elif event.key == pygame.K_4:
-                Friendly.append(units.Units(1, "assets\images\giantframe1.png", 200, 15, 5, 4, 5, False)) 
+                Friendly.append(units.Units(4, "assets\images\giantframe1.png", 200, 15, 5, 4, 5, False)) 
                 ##GOOD GUYS^^
                 ##BAD GUYS VVV
-            elif event.key == pygame.K_LEFT:    
-                Friendly.append(units.Units(1, "assets\images\knightframe1.png", 100, 10, 10, 5, 10, False))
-            elif event.key == pygame.K_2:
-                Friendly.append(units.Units(1, "assets/images/archersframe1.png", 65, 8, 12, 6, 14, False))            
-            elif event.key == pygame.K_3:
-                Friendly.append(units.Units(1, "assets\images\goblinframe1.png", 50, 5, 15, 15, 8, False))            
-            elif event.key == pygame.K_4:
-                Friendly.append(units.Units(1, "assets\images\giantframe1.png", 200, 15, 5, 4, 5, False)) 
+            elif event.key == pygame.K_7:    
+                Enemy.append(units.Units(5, "assets\images\knightframe1.png", 100, 10, 10, 5, 10, True))
+            elif event.key == pygame.K_8:
+                Enemy.append(units.Units(6, "assets/images/archersframe1.png", 65, 8, 12, 6, 100, True))            
+            elif event.key == pygame.K_9:
+                Enemy.append(units.Units(7, "assets\images\goblinframe1.png", 50, 5, 15, 15, 8, True))            
+            elif event.key == pygame.K_0:
+                Enemy.append(units.Units(8, "assets\images\giantframe1.png", 200, 15, 5, 4, 5, True)) 
         
 
 pygame.quit()
