@@ -1,8 +1,9 @@
 import pygame, sys
 from pygame.locals import*
+import units
 #i am julius
 pygame.init()
-WIDTH = 500
+WIDTH = 1000
 HEIGHT = 400
 running = True
 clock = pygame.time.Clock()
@@ -12,51 +13,69 @@ window.fill((255, 255, 255))
 back = pygame.Surface((WIDTH, HEIGHT))
 background = back.convert()
 background.fill((255, 255, 255))
+Friendly  = []
+Enemy = []
+healthA = 100
+healthB = 100
 
+# Draw an 8x8 pixel rectangle at position (50, 300)
+pygame.draw.rect(window, (255, 0, 0), (50, 300, 8, 8))
 class Player():
-    size = 20
-
-    speed = 250
-    move = 0
-    height = 50
-    width = 100
-
-    x = WIDTH / 2 - size / 2
-    y = HEIGHT - height
-
-    image = pygame.Surface((width, height)).convert()
-    image.fill((0, 255, 255))
+    def __init__(self):
+        self.size = 20
+        self.speed = 250
+        self.move = 0
+        self.height = 50
+        self.width = 100
+        self.x = WIDTH / 2 - self.size / 2
+        self.y = HEIGHT - self.height
+        self.image = pygame.Surface((self.width, self.height)).convert()
+        self.image.fill((0, 255, 255))
 
 player = Player()
 
+card_images = [
+    pygame.transform.scale(pygame.image.load("assets\images\OIP.webp"), (60, 90)),
+    pygame.transform.scale(pygame.image.load("assets\images\OIP (1).webp"), (60, 90)),
+    pygame.transform.scale(pygame.image.load("assets\images\Gobs.webp"), (60, 90)),
+    pygame.transform.scale(pygame.image.load("assets/images/Giant.png"), (60, 90)),
+]
+
+pygame.display.update()
 while running:
-    window.blit(background, (0, 0))
-    pygame.draw.polygon(window, (0, 255, 0), ((146, 0), (291, 106), (236, 277), (56, 277), (0, 106)))
-    pygame.draw.line(window, (0, 0, 255), (60, 60), (120, 60), 4)
-    pygame.draw.line(window, (0, 0, 255), (120, 60), (60, 120))
-    pygame.draw.line(window, (0, 0, 255), (60, 120), (120, 120), 4)
-    basicFont = pygame.font.SysFont(None, 48)
-    text = basicFont.render('Python is cool', True, (23, 23, 29), (255, 255, 255))
-    textRect = text.get_rect()
-    textRect.centerx = window.get_rect().centerx
-    textRect.centery = window.get_rect().centery
-    window.blit(text, textRect)
-    window.blit(player.image, (player.x, player.y))
+    window.fill((255, 255, 255))
+    # Display all card images in a row with spacing
+    card_spacing = 20
+    x = 50
+    y = 10
+    for img in card_images:
+        window.blit(img, (x, y))
+        x += img.get_width() + card_spacing
+    
+    # Update and draw all friendly units (knights)
+    for knight in Friendly:
+        knight.move()  # or knight.update() if you want to use your update logic
+        window.blit(knight.image, (knight.position, HEIGHT - knight.image.get_height()))
+
+    pygame.display.update()
+
     timePassed = clock.tick(30)
     timeSec = timePassed / 1000.0
     player.x += player.move * timeSec
-    pygame.display.update()
+
     for event in pygame.event.get():
         if event.type == QUIT:
             running = False
         elif event.type == KEYDOWN:
-            if event.key == K_RIGHT:
-                player.move = player.speed
-            elif event.key == K_LEFT:
+            if event.key == pygame.K_1:
+                Friendly.append(units.Units(1, "assets/images/pixil-gif-drawing.gif", 100, 10, 10, 5, 10, True))
+            elif event.key == pygame.K_2:
                 player.move = -player.speed
-        elif event.type == KEYUP:
-            if event.key == K_LEFT or K_RIGHT:
-                player.move = 0
+            elif event.key == pygame.K_3:
+                player.move = -player.speed
+            elif event.key == pygame.K_4:
+                player.move = -player.speed
+        
 
 pygame.quit()
 sys.exit()

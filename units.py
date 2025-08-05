@@ -1,10 +1,13 @@
 import pygame, sys
 from pygame.locals import*
 
+
 class Units:
     def __init__(self, id:int, image_path:str, health:int, damage:int, attackRate:int, speed:int, range:int, side:bool):
         self.id = id
-        self.image = pygame.image.load(image_path)
+        self.image = pygame.transform.scale(
+            pygame.image.load(image_path), (120, 180)  # <-- set your desired width and height here
+        )
         self.dead = False
         self.health = health
         self.damage = damage
