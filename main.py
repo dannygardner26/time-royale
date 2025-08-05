@@ -52,7 +52,10 @@ while running:
         window.blit(img, (x, y))
         x += img.get_width() + card_spacing
     
-    
+    # Update and draw all friendly units (knights)
+    for knight in Friendly:
+        knight.move()  # or knight.update() if you want to use your update logic
+        window.blit(knight.image, (knight.position, HEIGHT - knight.image.get_height()))
 
     pygame.display.update()
 
@@ -65,7 +68,7 @@ while running:
             running = False
         elif event.type == KEYDOWN:
             if event.key == pygame.K_1:
-                Friendly.append(units.Units(1, "assets\images\pixil-gif-drawing.gif", 100, 10, 10, 5, 10, True))
+                Friendly.append(units.Units(1, "assets/images/pixil-gif-drawing.gif", 100, 10, 10, 5, 10, True))
             elif event.key == pygame.K_2:
                 player.move = -player.speed
             elif event.key == pygame.K_3:

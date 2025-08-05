@@ -5,7 +5,9 @@ from pygame.locals import*
 class Units:
     def __init__(self, id:int, image_path:str, health:int, damage:int, attackRate:int, speed:int, range:int, side:bool):
         self.id = id
-        self.image = pygame.image.load(image_path)
+        self.image = pygame.transform.scale(
+            pygame.image.load(image_path), (120, 180)  # <-- set your desired width and height here
+        )
         self.dead = False
         self.health = health
         self.damage = damage
@@ -23,9 +25,9 @@ class Units:
     def move(self):
         # change position
         if self.side and self.position >= 0:
-            self.position -= self.card.speed
+            self.position -= self.speed
         elif self.position <= 100:
-            self.position += self.card.speed
+            self.position += self.speed
     def takeDamage(self, amount):
         self.health -= amount
         if self.health <= 0:
@@ -43,4 +45,4 @@ class Units:
             if abs(enemy.position - self.position) < self.range:
                 self.attack(self, enemy)
             else:
-                self.move(self)       
+                self.move(self)
