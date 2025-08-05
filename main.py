@@ -13,8 +13,8 @@ window.fill((255, 255, 255))
 back = pygame.Surface((WIDTH, HEIGHT))
 background = back.convert()
 background.fill((255, 255, 255))
-Friendly  = []
-Enemy = []
+Friendly  = [] # attacks tower B
+Enemy = [] # attacks tower A
 healthA = 100
 healthB = 100
 
@@ -53,9 +53,22 @@ while running:
         x += img.get_width() + card_spacing
     
     # Update and draw all friendly units (knights)
-    for knight in Friendly:
-        knight.move()  # or knight.update() if you want to use your update logic
-        window.blit(knight.image, (knight.position, HEIGHT - knight.image.get_height()))
+    for unit in Friendly:
+        if unit.dead:
+            Friendly.remove(unit)
+        else:
+            healthB -= unit.update(Enemy)  # or knight.update() if you want to use your update logic
+            window.blit(unit.image, (unit.position, HEIGHT - unit.image.get_height()))
+    for unit in Enemy:
+        if unit.dead:
+            Enemy.remove(unit)
+        else:
+            healthA -= unit.update(Friendly)  # or knight.update() if you want to use your update logic
+            window.blit(unit.image, (unit.position, HEIGHT - unit.image.get_height()))
+    # Tower A / Friendly tower
+    pygame.draw.rect(window, (255, 0, 0), (100, 100, healthA, 10))
+    # Tower B / Enemy tower
+    pygame.draw.rect(window, (255, 0, 0), (800, 100, healthB, 10))
 
     pygame.display.update()
 
@@ -66,11 +79,11 @@ while running:
     for event in pygame.event.get():
         if event.type == QUIT:
             running = False
-        elif event.type == KEYDOWN:
+        elif event.type == KEYDOWN: # speeds can't be relative primes
             if event.key == pygame.K_1:
-                Friendly.append(units.Units(1, "assets/images/pixil-gif-drawing.gif", 100, 10, 10, 5, 10, False))
+                Friendly.append(units.Units(1, "assets/images/pixil-gif-drawing.gif", 100, 10, 10, 5, 100, False))
             elif event.key == pygame.K_2:
-                Friendly.append(units.Units(1, "assets\images\pixil-gif-drawing (1).gif", 65, 8, 15, 6, 14, False))            
+                Enemy.append(units.Units(2, "assets\images\pixil-gif-drawing (1).gif", 65, 8, 15, 10, 100, True))
             elif event.key == pygame.K_3:
                 player.move = -player.speed
             elif event.key == pygame.K_4:

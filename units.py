@@ -28,6 +28,7 @@ class Units:
         self.health -= amount
         if self.health <= 0:
             self.dead = True
+            print(self.id, "deaded")
     def attack(self, target : "Units"):
         self.aCounter += 1
         if self.aCounter % self.attackRate == 0:
@@ -41,15 +42,13 @@ class Units:
         for enemy in enemies: # enemies is placeholder, list of enemy units
             if not enemy.dead:
                 if self.side:
-                    if enemy.position > min and 100 <= self.position - enemy.position <= self.range:
+                    if enemy.position > min and self.position - enemy.position <= self.range:
                         closest = enemy
                         min = enemy.position
-                        break
                 else:
-                    if enemy.position < min and 100 <= enemy.position - self.position <= self.range:
+                    if enemy.position < min and enemy.position - self.position <= self.range:
                         closest = enemy
                         min = enemy.position
-                        break
         if closest == None:
             if self.side:
                 if self.position - 100 <= self.range:
@@ -61,15 +60,19 @@ class Units:
         pass
     def update(self, enemies : list["Units"]) -> int:
         # pass a list of enemy units to this function
-        if self.curTarget != None:
-            if self.curTarget == 'A' or self.curTarget == 'B':
-                return self.damage
+        if not self.dead:
+            if self.curTarget != None:
+                if self.curTarget == 'A' or self.curTarget == 'B':
+                    self.aCounter += 1
+                    if self.aCounter % self.attackRate == 0:
+                        return self.damage
+                else:
+                    self.attack(self.curTarget)
+                    if self.curTarget.dead:
+                        self.curTarget = None
             else:
-                self.attack(self, self.curTarget)
-                if self.curTarget.dead:
-                    self.curTarget = None
-        else:
-            self.curTarget = self.getTarget(enemies)
-            if self.curTarget == None:
-                self.move(self)
+                self.curTarget = self.getTarget(enemies)
+                print(self.id, self.curTarget)
+                if self.curTarget == None:
+                    self.move()
         return 0
