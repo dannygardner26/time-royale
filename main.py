@@ -68,9 +68,9 @@ while running:
             running = False
         elif event.type == KEYDOWN:
             if event.key == pygame.K_1:
-                Friendly.append(units.Units(1, "assets/images/pixil-gif-drawing.gif", 100, 10, 10, 5, 10, True))
+                Friendly.append(units.Units(1, "assets/images/pixil-gif-drawing.gif", 100, 10, 10, 5, 10, False))
             elif event.key == pygame.K_2:
-                player.move = -player.speed
+                Friendly.append(units.Units(1, "assets\images\pixil-gif-drawing (1).gif", 65, 8, 15, 6, 14, False))            
             elif event.key == pygame.K_3:
                 player.move = -player.speed
             elif event.key == pygame.K_4:
