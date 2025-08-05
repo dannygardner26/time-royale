@@ -81,13 +81,23 @@ while running:
             running = False
         elif event.type == KEYDOWN: # speeds can't be relative primes
             if event.key == pygame.K_1:
-                Friendly.append(units.Units(1, "assets/images/pixil-gif-drawing.gif", 100, 10, 10, 5, 100, False))
+                Friendly.append(units.Units(1, "assets\images\knightframe1.png", 100, 10, 10, 5, 10, False))
             elif event.key == pygame.K_2:
-                Enemy.append(units.Units(2, "assets\images\pixil-gif-drawing (1).gif", 65, 8, 15, 10, 100, True))
+                Friendly.append(units.Units(1, "assets/images/archersframe1.png", 65, 8, 12, 6, 14, False))            
             elif event.key == pygame.K_3:
-                player.move = -player.speed
+                Friendly.append(units.Units(1, "assets\images\goblinframe1.png", 50, 5, 15, 15, 8, False))            
             elif event.key == pygame.K_4:
-                player.move = -player.speed
+                Friendly.append(units.Units(1, "assets\images\giantframe1.png", 200, 15, 5, 4, 5, False)) 
+                ##GOOD GUYS^^
+                ##BAD GUYS VVV
+            elif event.key == pygame.K_LEFT:    
+                Friendly.append(units.Units(1, "assets\images\knightframe1.png", 100, 10, 10, 5, 10, False))
+            elif event.key == pygame.K_2:
+                Friendly.append(units.Units(1, "assets/images/archersframe1.png", 65, 8, 12, 6, 14, False))            
+            elif event.key == pygame.K_3:
+                Friendly.append(units.Units(1, "assets\images\goblinframe1.png", 50, 5, 15, 15, 8, False))            
+            elif event.key == pygame.K_4:
+                Friendly.append(units.Units(1, "assets\images\giantframe1.png", 200, 15, 5, 4, 5, False)) 
         
 
 pygame.quit()

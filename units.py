@@ -5,8 +5,17 @@ from pygame.locals import*
 class Units:
     def __init__(self, id:int, image_path:str, health:int, damage:int, attackRate:int, speed:int, range:int, side:bool):
         self.id = id
+        # Set different sizes for different units
+        if "knight" in image_path:
+            size = (80, 120)  # Make the knight taller (width, height)
+        elif "giant" in image_path:
+            size = (100, 150)  # Make the giant bigger
+        elif "goblin" in image_path:
+            size = (40, 60)    # Goblin smaller
+        else:
+            size = (60, 90)    # Default size
         self.image = pygame.transform.scale(
-            pygame.image.load(image_path), (120, 180)  # <-- set your desired width and height here
+            pygame.image.load(image_path).convert_alpha(), size
         )
         self.dead = False
         self.health = health
