@@ -13,36 +13,63 @@ class Units:
         self.damage = damage
         self.speed = speed
         self.range = range
-        self.position = 100*side
+        self.position = 100+800*side
         self.side = side
-        # self.card = Card  # Removed or replace with actual Card instance if needed
-    def update(self):
-        pass
-
-    def attack(self):
-        pass
-
+        self.attackRate = attackRate
+        self.aCounter = 0
+        self.curTarget = None
     def move(self):
         # change position
-        if self.side and self.position >= 0:
+        if self.side and self.position >= 100:
             self.position -= self.speed
-        elif self.position <= 100:
+        elif self.position <= 900:
             self.position += self.speed
-    def takeDamage(self, amount):
+    def takeDamage(self, amount:int):
         self.health -= amount
         if self.health <= 0:
             self.dead = True
-    def attack(self, target):
+    def attack(self, target : "Units"):
         self.aCounter += 1
         if self.aCounter % self.attackRate == 0:
             target.takeDamage(self.damage)
-    def update(self):
-        # find enemies
-        enemies = main.enemies
+    def getTarget(self, enemies : list["Units"]):
         if self.side:
-            enemies = main.allies
+            min = 100 # minimal distance from "me" 
+        else:
+            min = 900
+        closest = None
         for enemy in enemies: # enemies is placeholder, list of enemy units
-            if abs(enemy.position - self.position) < self.range:
-                self.attack(self, enemy)
+            if not enemy.dead:
+                if self.side:
+                    if enemy.position > min and 100 <= self.position - enemy.position <= self.range:
+                        closest = enemy
+                        min = enemy.position
+                        break
+                else:
+                    if enemy.position < min and 100 <= enemy.position - self.position <= self.range:
+                        closest = enemy
+                        min = enemy.position
+                        break
+        if closest == None:
+            if self.side:
+                if self.position - 100 <= self.range:
+                    closest = 'A'
+            elif 900 - self.position <= self.range:
+                closest = 'B'
+        return closest
+    def attackTower(): # placeholder
+        pass
+    def update(self, enemies : list["Units"]) -> int:
+        # pass a list of enemy units to this function
+        if self.curTarget != None:
+            if self.curTarget == 'A' or self.curTarget == 'B':
+                return self.damage
             else:
+                self.attack(self, self.curTarget)
+                if self.curTarget.dead:
+                    self.curTarget = None
+        else:
+            self.curTarget = self.getTarget(enemies)
+            if self.curTarget == None:
                 self.move(self)
+        return 0
