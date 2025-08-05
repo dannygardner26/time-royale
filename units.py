@@ -13,16 +13,16 @@ class Units:
         self.damage = damage
         self.speed = speed
         self.range = range
-        self.position = 100*side
+        self.position = 100+800*side
         self.side = side
         self.attackRate = attackRate
         self.aCounter = 0
         self.curTarget = None
     def move(self):
         # change position
-        if self.side and self.position >= 0:
+        if self.side and self.position >= 100:
             self.position -= self.speed
-        elif self.position <= 100:
+        elif self.position <= 900:
             self.position += self.speed
     def takeDamage(self, amount:int):
         self.health -= amount
@@ -34,27 +34,27 @@ class Units:
             target.takeDamage(self.damage)
     def getTarget(self, enemies : list["Units"]):
         if self.side:
-            min = 0 # minimal distance from "me" 
+            min = 100 # minimal distance from "me" 
         else:
-            min = 100
+            min = 900
         closest = None
         for enemy in enemies: # enemies is placeholder, list of enemy units
             if not enemy.dead:
                 if self.side:
-                    if enemy.position > min and 0 <= self.position - enemy.position <= self.range:
+                    if enemy.position > min and 100 <= self.position - enemy.position <= self.range:
                         closest = enemy
                         min = enemy.position
                         break
                 else:
-                    if enemy.position < min and 0 <= enemy.position - self.position <= self.range:
+                    if enemy.position < min and 100 <= enemy.position - self.position <= self.range:
                         closest = enemy
                         min = enemy.position
                         break
         if closest == None:
             if self.side:
-                if self.position <= self.range:
+                if self.position - 100 <= self.range:
                     closest = 'A'
-            elif 100 - self.position <= self.range:
+            elif 900 - self.position <= self.range:
                 closest = 'B'
         return closest
     def attackTower(): # placeholder
