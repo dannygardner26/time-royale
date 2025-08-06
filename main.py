@@ -1,6 +1,7 @@
 import pygame, sys
 from pygame.locals import*
 import units
+import random
 #i am julius
 pygame.init()
 WIDTH = 1000
@@ -164,25 +165,31 @@ while running:
             Friendly.remove(unit)
         else:
             healthB -= unit.update(Enemy)  # or knight.update() if you want to use your update logic
-            window.blit(unit.image, (unit.position, HEIGHT - unit.image.get_height()-80))
+            window.blit(unit.image, (unit.position, HEIGHT - unit.image.get_height()-80-(unit.id*5)))
     for unit in Enemy:
         if unit.dead:
             Enemy.remove(unit)
         else:
             healthA -= unit.update(Friendly)
+<<<<<<< HEAD
             window.blit(unit.image, (unit.position, HEIGHT - unit.image.get_height()-80))
 
     timer_text = font.render(f"Time: {int(time_left)}", True, (0, 0, 0))
     window.blit(timer_text, (WIDTH // 2 - timer_text.get_width() // 2, 10))
 
+=======
+            window.blit(unit.image, (unit.position, HEIGHT - unit.image.get_height()-80-(unit.id*5)))
+    if timer >= 20:
+        amount = 2
+        delixer = font.render("DOUBLE ELIXER", True, (0, 0, 0))
+        window.blit(delixer, (WIDTH // 2 - delixer.get_width() // 2 - 5, 20))
+>>>>>>> d91faf7ccc07c9e4d20d6523d03ffa1b05fdfbc2
     pygame.display.update()
     timePassed = clock.tick(30)
     timeSec = timePassed / 1000.0
     timer += timeSec
     elixerTime += timeSec
     player.x += player.move * timeSec
-    if timer >= 20:
-        amount = 2
     if elixerTime >= 1/amount:
         elixerA += 1
         elixerB += 1
@@ -213,6 +220,7 @@ while running:
     for event in pygame.event.get():
         if event.type == QUIT:
             running = False
+<<<<<<< HEAD
         elif event.type == KEYDOWN:
             # Only allow spawning the cards that were selected, using 1-4
             if event.key == pygame.K_1 and len(selected_cards) > 0:
@@ -424,6 +432,35 @@ while running:
                         True
                     ))
                     elixerB -= 4
+=======
+        elif event.type == KEYDOWN: # speeds can't be relative primes
+            if event.key == pygame.K_1 and elixerA >= 3:
+                Friendly.append(units.Units(random.random(), "assets\images\knightframe1.png", 70, 10, 10, 5, 10, False))
+                elixerA -= 3
+            elif event.key == pygame.K_2 and elixerA >= 3:
+                Friendly.append(units.Units(random.random(), "assets/images/archersframe1.png", 60, 8, 12, 6, 200, False))     
+                elixerA -= 3       
+            elif event.key == pygame.K_3 and elixerA >= 2:
+                Friendly.append(units.Units(random.random(), "assets\images\goblinframe1.png", 50, 5, 15, 15, 8, False))
+                elixerA -= 2    
+            elif event.key == pygame.K_4 and elixerA >= 5:
+                Friendly.append(units.Units(random.random(), "assets\images\giantframe1.png", 100, 15, 20, 2, 5, False))
+                elixerA -= 5
+                ##GOOD GUYS^^
+                ##BAD GUYS VVV
+            elif event.key == pygame.K_7 and elixerB >= 3:    
+                Enemy.append(units.Units(random.random(), "assets\images\knightframe1.png", 70, 10, 10, 5, 10, True))
+                elixerB -= 3
+            elif event.key == pygame.K_8 and elixerB >= 3:
+                Enemy.append(units.Units(random.random(), "assets/images/archersframe1.png", 60, 8, 12, 6, 200, True))
+                elixerB -= 3     
+            elif event.key == pygame.K_9 and elixerB >= 2:
+                Enemy.append(units.Units(random.random(), "assets\images\goblinframe1.png", 50, 5, 15, 15, 8, True))
+                elixerB -= 2
+            elif event.key == pygame.K_0 and elixerB >= 5:
+                Enemy.append(units.Units(random.random(), "assets\images\giantframe1.png", 100, 15, 20, 2, 5, True))
+                elixerB -= 5
+>>>>>>> d91faf7ccc07c9e4d20d6523d03ffa1b05fdfbc2
 
     # Check for game over
     if healthA <= 0 or healthB <= 0:
