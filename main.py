@@ -19,6 +19,7 @@ elixerA = 0 # friendly elixer
 elixerB = 0 # enemy elixer
 # Draw an 8x8 pixel rectangle at position (50, 300)
 pygame.draw.rect(window, (255, 0, 0), (50, 300, 8, 8))
+font = pygame.font.SysFont(None, 32)
 class Player():
     def __init__(self):
         self.size = 20
@@ -45,10 +46,36 @@ tower_img = pygame.transform.scale(
     (160, 240)  # width, height (adjust as needed to be bigger than the giant)
 )
 
+def show_menu(winner=None):
+    window.fill((255, 255, 255))
+    if winner is None:
+        title = font.render("TIME ROYALE", True, (0, 0, 0))
+        prompt = font.render("Press SPACE to Start", True, (0, 0, 0))
+        window.blit(title, (WIDTH // 2 - title.get_width() // 2, HEIGHT // 2 - 60))
+        window.blit(prompt, (WIDTH // 2 - prompt.get_width() // 2, HEIGHT // 2))
+    else:
+        win_text = font.render(f"Player {winner} Wins!", True, (0, 128, 0))
+        prompt = font.render("Press SPACE to Restart", True, (0, 0, 0))
+        window.blit(win_text, (WIDTH // 2 - win_text.get_width() // 2, HEIGHT // 2 - 60))
+        window.blit(prompt, (WIDTH // 2 - prompt.get_width() // 2, HEIGHT // 2))
+    pygame.display.update()
+    waiting = True
+    while waiting:
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == KEYDOWN and event.key == pygame.K_SPACE:
+                waiting = False
+
 pygame.display.update()
 timer = 0
 elixerTime = 0
 amount = 1
+
+# --- Main program starts here ---
+show_menu()  # Show menu before starting the game
+
 while running:
     window.blit(background, (0, 0))
 
@@ -56,11 +83,34 @@ while running:
     window.blit(tower_img, (0, HEIGHT - tower_img.get_height() - 80))  # Left edge (Friendly tower)
     window.blit(tower_img, (WIDTH - tower_img.get_width(), HEIGHT - tower_img.get_height() - 80))  # Right edge (Enemy tower)
 
-    # Now draw cards, units, health bars, etc.
-    # Display all card images in a row with spacing
+    # Center positions for left and right player UI
+    bar_width = 200
+    bar_height = 20
+    left_center_x = 200
+    right_center_x = WIDTH - 200
+
+    # Titles (centered)
+    player1_text = font.render("Player 1", True, (0, 0, 0))
+    player2_text = font.render("Player 2", True, (0, 0, 0))
+    window.blit(player1_text, (left_center_x - player1_text.get_width() // 2, 40))
+    window.blit(player2_text, (right_center_x - player2_text.get_width() // 2, 40))
+
+    # Health bars (centered)
+    pygame.draw.rect(window, (255, 0, 0), (left_center_x - bar_width // 2, 70, bar_width * healthA / 300, 10))
+    pygame.draw.rect(window, (255, 0, 0), (right_center_x - bar_width // 2, 70, bar_width * healthB / 300, 10))
+
+    # Elixir bars (centered, under health bars)
+    max_elixer = 10
+    pygame.draw.rect(window, (128, 128, 128), (left_center_x - bar_width // 2, 90, bar_width, bar_height))  # background left
+    pygame.draw.rect(window, (102, 0, 204), (left_center_x - bar_width // 2, 90, int(bar_width * min(elixerA, max_elixer) / max_elixer), bar_height))  # fill left
+    pygame.draw.rect(window, (128, 128, 128), (right_center_x - bar_width // 2, 90, bar_width, bar_height))  # background right
+    pygame.draw.rect(window, (204, 0, 102), (right_center_x - bar_width // 2, 90, int(bar_width * min(elixerB, max_elixer) / max_elixer), bar_height))  # fill right
+
+    # Cards (centered, below bars)
     card_spacing = 20
-    x = 50
-    y = 10
+    total_width = len(card_images) * 60 + (len(card_images) - 1) * card_spacing
+    x = WIDTH // 2 - total_width // 2
+    y = 130  # below the bars
     for img in card_images:
         window.blit(img, (x, y))
         x += img.get_width() + card_spacing
@@ -142,7 +192,21 @@ while running:
             elif event.key == pygame.K_0 and elixerB >= 5:
                 Enemy.append(units.Units(8, "assets\images\giantframe1.png", 200, 15, 5, 4, 5, True))
                 elixerB -= 5
-        
+
+    # Check for game over
+    if healthA <= 0 or healthB <= 0:
+        winner = 2 if healthA <= 0 else 1
+        show_menu(winner)
+        # Reset game state
+        healthA = 300
+        healthB = 300
+        elixerA = 0
+        elixerB = 0
+        Friendly.clear()
+        Enemy.clear()
+        timer = 0
+        elixerTime = 0
+        amount = 1
 
 pygame.quit()
 sys.exit()
