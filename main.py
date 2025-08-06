@@ -80,8 +80,8 @@ while running:
     window.blit(background, (0, 0))
 
     # Draw towers at the very left and right ends
-    window.blit(tower_img, (0, HEIGHT - tower_img.get_height()))  # Left edge (Friendly tower)
-    window.blit(tower_img, (WIDTH - tower_img.get_width(), HEIGHT - tower_img.get_height()))  # Right edge (Enemy tower)
+    window.blit(tower_img, (0, HEIGHT - tower_img.get_height() - 80))  # Left edge (Friendly tower)
+    window.blit(tower_img, (WIDTH - tower_img.get_width(), HEIGHT - tower_img.get_height() - 80))  # Right edge (Enemy tower)
 
     # Center positions for left and right player UI
     bar_width = 200
