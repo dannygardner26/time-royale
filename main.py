@@ -1,6 +1,7 @@
 import pygame, sys
 from pygame.locals import*
 import units
+import random
 #i am julius
 pygame.init()
 WIDTH = 1000
@@ -119,22 +120,23 @@ while running:
             Friendly.remove(unit)
         else:
             healthB -= unit.update(Enemy)  # or knight.update() if you want to use your update logic
-            window.blit(unit.image, (unit.position, HEIGHT - unit.image.get_height()-80))
+            window.blit(unit.image, (unit.position, HEIGHT - unit.image.get_height()-80-(unit.id*5)))
     for unit in Enemy:
         if unit.dead:
             Enemy.remove(unit)
         else:
             healthA -= unit.update(Friendly)
-            window.blit(unit.image, (unit.position, HEIGHT - unit.image.get_height()-80))
-
+            window.blit(unit.image, (unit.position, HEIGHT - unit.image.get_height()-80-(unit.id*5)))
+    if timer >= 20:
+        amount = 2
+        delixer = font.render("DOUBLE ELIXER", True, (0, 0, 0))
+        window.blit(delixer, (WIDTH // 2 - delixer.get_width() // 2 - 5, 20))
     pygame.display.update()
     timePassed = clock.tick(30)
     timeSec = timePassed / 1000.0
     timer += timeSec
     elixerTime += timeSec
     player.x += player.move * timeSec
-    if timer >= 20:
-        amount = 2
     if elixerTime >= 1/amount:
         elixerA += 1
         elixerB += 1
@@ -148,30 +150,30 @@ while running:
             running = False
         elif event.type == KEYDOWN: # speeds can't be relative primes
             if event.key == pygame.K_1 and elixerA >= 3:
-                Friendly.append(units.Units(1, "assets\images\knightframe1.png", 70, 10, 10, 5, 10, False))
+                Friendly.append(units.Units(random.random(), "assets\images\knightframe1.png", 70, 10, 10, 5, 10, False))
                 elixerA -= 3
             elif event.key == pygame.K_2 and elixerA >= 3:
-                Friendly.append(units.Units(2, "assets/images/archersframe1.png", 60, 8, 12, 6, 200, False))     
+                Friendly.append(units.Units(random.random(), "assets/images/archersframe1.png", 60, 8, 12, 6, 200, False))     
                 elixerA -= 3       
             elif event.key == pygame.K_3 and elixerA >= 2:
-                Friendly.append(units.Units(3, "assets\images\goblinframe1.png", 50, 5, 15, 15, 8, False))
+                Friendly.append(units.Units(random.random(), "assets\images\goblinframe1.png", 50, 5, 15, 15, 8, False))
                 elixerA -= 2    
             elif event.key == pygame.K_4 and elixerA >= 5:
-                Friendly.append(units.Units(4, "assets\images\giantframe1.png", 100, 15, 20, 2, 5, False))
+                Friendly.append(units.Units(random.random(), "assets\images\giantframe1.png", 100, 15, 20, 2, 5, False))
                 elixerA -= 5
                 ##GOOD GUYS^^
                 ##BAD GUYS VVV
             elif event.key == pygame.K_7 and elixerB >= 3:    
-                Enemy.append(units.Units(5, "assets\images\knightframe1.png", 70, 10, 10, 5, 10, True))
+                Enemy.append(units.Units(random.random(), "assets\images\knightframe1.png", 70, 10, 10, 5, 10, True))
                 elixerB -= 3
             elif event.key == pygame.K_8 and elixerB >= 3:
-                Enemy.append(units.Units(6, "assets/images/archersframe1.png", 60, 8, 12, 6, 200, True))
+                Enemy.append(units.Units(random.random(), "assets/images/archersframe1.png", 60, 8, 12, 6, 200, True))
                 elixerB -= 3     
             elif event.key == pygame.K_9 and elixerB >= 2:
-                Enemy.append(units.Units(7, "assets\images\goblinframe1.png", 50, 5, 15, 15, 8, True))
+                Enemy.append(units.Units(random.random(), "assets\images\goblinframe1.png", 50, 5, 15, 15, 8, True))
                 elixerB -= 2
             elif event.key == pygame.K_0 and elixerB >= 5:
-                Enemy.append(units.Units(8, "assets\images\giantframe1.png", 100, 15, 20, 2, 5, True))
+                Enemy.append(units.Units(random.random(), "assets\images\giantframe1.png", 100, 15, 20, 2, 5, True))
                 elixerB -= 5
 
     # Check for game over

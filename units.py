@@ -1,9 +1,11 @@
-import pygame, sys
+import pygame
 from pygame.locals import*
 
 
 class Units:
-    def __init__(self, id:int, image_path:str, health:int, damage:int, attackRate:int, speed:int, range:int, side:bool):
+    def __init__(self, id:int, image_path:str, health:int, damage:int, attackRate:int, speed:int, range:int, side:bool, start=None):
+        self.tpriority = False
+        self.splash = 0
         # Set different sizes for different units
         if "knight" in image_path:
             size = (80, 120)  # Make the knight taller (width, height)
@@ -12,6 +14,9 @@ class Units:
             size = (100, 150)  # Make the giant bigger
         elif "goblin" in image_path:
             size = (40, 60)    # Goblin smaller
+        elif "wizard" in image_path:
+            self.splash = 20
+            size = None        # Change this
         else:
             size = (60, 90)    # Default size
 
@@ -22,13 +27,15 @@ class Units:
         self.image = img
 
         self.id = id
-        self.tpriority = False if not hasattr(self, 'tpriority') else self.tpriority
         self.dead = False
         self.health = health
         self.damage = damage
         self.speed = speed
         self.range = range
-        self.position = 100 + 720 * side
+        if start != None:
+            self.position = start
+        else:
+            self.position = 100 + 720 * side
         self.side = side
         self.attackRate = attackRate
         self.aCounter = 0
@@ -44,10 +51,22 @@ class Units:
         if self.health <= 0:
             self.dead = True
             # print(self.id, "deaded") # debug code 
-    def attack(self, target : "Units"):
+    def attack(self, target : "Units", enemies : list["Units"]):
         self.aCounter += 1
         if self.aCounter % self.attackRate == 0:
             target.takeDamage(self.damage)
+            if self.splash > 0:
+                self.splashAttack(enemies)
+    def splashAttack(self, enemies : list["Units"]):
+        splashCenter = self.curTarget.position
+        for enemy in enemies:
+            if not enemy.dead:
+                if self.side:
+                    if -self.splash <= splashCenter - enemy.position <= self.splash:
+                        enemy.takeDamage(self.damage/2)
+                else:
+                    if -self.splash <= enemy.position - splashCenter <= self.splash:
+                        enemy.takeDamage(self.damage/2)
     def getTarget(self, enemies : list["Units"]) -> "Units":
         closest = None
         if not self.tpriority:
@@ -83,8 +102,6 @@ class Units:
                 return True
         # print(self.id, "case tres")
         return False
-    def attackTower(): # placeholder
-        pass
     def update(self, enemies : list["Units"]) -> int:
         # pass a list of enemy units to this function
         if not self.dead:
@@ -96,7 +113,7 @@ class Units:
                 else:
                     if self.inRange(self.curTarget):
                         # print(self.id, "a")
-                        self.attack(self.curTarget)
+                        self.attack(self.curTarget, enemies)
                         if self.curTarget.dead:
                             self.curTarget = None
                     else:
