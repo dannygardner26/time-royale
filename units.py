@@ -39,7 +39,7 @@ class Units:
         self.health -= amount
         if self.health <= 0:
             self.dead = True
-            print(self.id, "deaded") # debug code 
+            # print(self.id, "deaded") # debug code 
     def attack(self, target : "Units"):
         self.aCounter += 1
         if self.aCounter % self.attackRate == 0:
@@ -71,13 +71,13 @@ class Units:
     def inRange(self, enemy : "Units") -> bool:
         if self.side:
             if 0 <= self.position - enemy.position <= self.range:
-                print(self.id, "case uno")
+                # print(self.id, "case uno")
                 return True
         else:
             if 0 <= enemy.position - self.position <= self.range:
-                print(self.id, "case dos")
+                # print(self.id, "case dos")
                 return True
-        print(self.id, "case tres")
+        # print(self.id, "case tres")
         return False
     def attackTower(): # placeholder
         pass
@@ -91,16 +91,16 @@ class Units:
                         return self.damage
                 else:
                     if self.inRange(self.curTarget):
-                        print(self.id, "a")
+                        # print(self.id, "a")
                         self.attack(self.curTarget)
                         if self.curTarget.dead:
                             self.curTarget = None
                     else:
                         self.curTarget = None
-                        print(self.id, "b")
+                        # print(self.id, "b")
             else:
                 self.curTarget = self.getTarget(enemies)
-                print(self.id, self.curTarget)
+                # print(self.id, self.curTarget)
                 if self.curTarget == None:
                     self.move()
         return 0

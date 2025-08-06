@@ -17,7 +17,8 @@ Friendly  = [] # attacks tower B
 Enemy = [] # attacks tower A
 healthA = 100
 healthB = 100
-
+elixerA = 0 # friendly elixer
+elixerB = 0 # enemy elixer
 # Draw an 8x8 pixel rectangle at position (50, 300)
 pygame.draw.rect(window, (255, 0, 0), (50, 300, 8, 8))
 class Player():
@@ -42,6 +43,9 @@ card_images = [
 ]
 
 pygame.display.update()
+timer = 0
+elixerTime = 0
+amount = 1
 while running:
     window.fill((255, 255, 255))
     # Display all card images in a row with spacing
@@ -74,30 +78,47 @@ while running:
 
     timePassed = clock.tick(30)
     timeSec = timePassed / 1000.0
+    timer += timeSec
+    elixerTime += timeSec
     player.x += player.move * timeSec
+    if timer >= 20:
+        amount = 2
+    if elixerTime >= 1/amount:
+        elixerA += 1
+        elixerB += 1
+        elixerTime -= 1/amount
+        print(elixerA, elixerB)
 
     for event in pygame.event.get():
         if event.type == QUIT:
             running = False
         elif event.type == KEYDOWN: # speeds can't be relative primes
-            if event.key == pygame.K_1:
+            if event.key == pygame.K_1 and elixerA >= 3:
                 Friendly.append(units.Units(1, "assets\images\knightframe1.png", 100, 10, 10, 5, 10, False))
-            elif event.key == pygame.K_2:
-                Friendly.append(units.Units(2, "assets/images/archersframe1.png", 65, 8, 12, 6, 100, False))            
-            elif event.key == pygame.K_3:
-                Friendly.append(units.Units(3, "assets\images\goblinframe1.png", 50, 5, 15, 15, 8, False))            
-            elif event.key == pygame.K_4:
-                Friendly.append(units.Units(4, "assets\images\giantframe1.png", 200, 15, 5, 4, 5, False)) 
+                elixerA -= 3
+            elif event.key == pygame.K_2 and elixerA >= 3:
+                Friendly.append(units.Units(2, "assets/images/archersframe1.png", 65, 8, 12, 6, 100, False))     
+                elixerA -= 3       
+            elif event.key == pygame.K_3 and elixerA >= 2:
+                Friendly.append(units.Units(3, "assets\images\goblinframe1.png", 50, 5, 15, 15, 8, False))
+                elixerA -= 2    
+            elif event.key == pygame.K_4 and elixerA >= 5:
+                Friendly.append(units.Units(4, "assets\images\giantframe1.png", 200, 15, 5, 4, 5, False))
+                elixerA -= 5
                 ##GOOD GUYS^^
                 ##BAD GUYS VVV
-            elif event.key == pygame.K_7:    
+            elif event.key == pygame.K_7 and elixerB >= 3:    
                 Enemy.append(units.Units(5, "assets\images\knightframe1.png", 100, 10, 10, 5, 10, True))
-            elif event.key == pygame.K_8:
-                Enemy.append(units.Units(6, "assets/images/archersframe1.png", 65, 8, 12, 6, 100, True))            
-            elif event.key == pygame.K_9:
-                Enemy.append(units.Units(7, "assets\images\goblinframe1.png", 50, 5, 15, 15, 8, True))            
-            elif event.key == pygame.K_0:
-                Enemy.append(units.Units(8, "assets\images\giantframe1.png", 200, 15, 5, 4, 5, True)) 
+                elixerB -= 3
+            elif event.key == pygame.K_8 and elixerB >= 3:
+                Enemy.append(units.Units(6, "assets/images/archersframe1.png", 65, 8, 12, 6, 100, True))
+                elixerB -= 3     
+            elif event.key == pygame.K_9 and elixerB >= 2:
+                Enemy.append(units.Units(7, "assets\images\goblinframe1.png", 50, 5, 15, 15, 8, True))
+                elixerB -= 2
+            elif event.key == pygame.K_0 and elixerB >= 5:
+                Enemy.append(units.Units(8, "assets\images\giantframe1.png", 200, 15, 5, 4, 5, True))
+                elixerB -= 5
         
 
 pygame.quit()
