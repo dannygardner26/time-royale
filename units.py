@@ -4,8 +4,6 @@ from pygame.locals import*
 
 class Units:
     def __init__(self, id:int, image_path:str, health:int, damage:int, attackRate:int, speed:int, range:int, side:bool):
-        self.id = id
-        self.tpriority = False
         # Set different sizes for different units
         if "knight" in image_path:
             size = (80, 120)  # Make the knight taller (width, height)
@@ -16,15 +14,21 @@ class Units:
             size = (40, 60)    # Goblin smaller
         else:
             size = (60, 90)    # Default size
-        self.image = pygame.transform.scale(
-            pygame.image.load(image_path).convert_alpha(), size
-        )
+
+        img = pygame.image.load(image_path).convert_alpha()
+        img = pygame.transform.scale(img, size)
+        if side:  # If this is an enemy, flip horizontally
+            img = pygame.transform.flip(img, True, False)
+        self.image = img
+
+        self.id = id
+        self.tpriority = False if not hasattr(self, 'tpriority') else self.tpriority
         self.dead = False
         self.health = health
         self.damage = damage
         self.speed = speed
         self.range = range
-        self.position = 100+800*side
+        self.position = 100 + 800 * side
         self.side = side
         self.attackRate = attackRate
         self.aCounter = 0
