@@ -171,55 +171,52 @@ while running:
             Enemy.remove(unit)
         else:
             healthA -= unit.update(Friendly)
-<<<<<<< HEAD
-            window.blit(unit.image, (unit.position, HEIGHT - unit.image.get_height()-80))
+        window.blit(unit.image, (unit.position, HEIGHT - unit.image.get_height()-80-(unit.id*5)))
+if timer >= 20:
+    amount = 2
+    delixer = font.render("DOUBLE ELIXER", True, (0, 0, 0))
+    window.blit(delixer, (WIDTH // 2 - delixer.get_width() // 2 - 5, 20))
 
-    timer_text = font.render(f"Time: {int(time_left)}", True, (0, 0, 0))
-    window.blit(timer_text, (WIDTH // 2 - timer_text.get_width() // 2, 10))
+timer_text = font.render(f"Time: {int(time_left)}", True, (0, 0, 0))
+window.blit(timer_text, (WIDTH // 2 - timer_text.get_width() // 2, 10))
 
-=======
-            window.blit(unit.image, (unit.position, HEIGHT - unit.image.get_height()-80-(unit.id*5)))
-    if timer >= 20:
-        amount = 2
-        delixer = font.render("DOUBLE ELIXER", True, (0, 0, 0))
-        window.blit(delixer, (WIDTH // 2 - delixer.get_width() // 2 - 5, 20))
->>>>>>> d91faf7ccc07c9e4d20d6523d03ffa1b05fdfbc2
-    pygame.display.update()
-    timePassed = clock.tick(30)
-    timeSec = timePassed / 1000.0
-    timer += timeSec
-    elixerTime += timeSec
-    player.x += player.move * timeSec
-    if elixerTime >= 1/amount:
-        elixerA += 1
-        elixerB += 1
-        elixerA = min(elixerA, max_elixer)
-        elixerB = min(elixerB, max_elixer)
-        elixerTime -= 1/amount
-        print(elixerA, elixerB)
+pygame.display.update()
+# The following block was incorrectly indented; fix indentation
+timePassed = clock.tick(30)
+timeSec = timePassed / 1000.0
+timer += timeSec
+elixerTime += timeSec
+player.x += player.move * timeSec
+if elixerTime >= 1/amount:
+    elixerA += 1
+    elixerB += 1
+    elixerA = min(elixerA, max_elixer)
+    elixerB = min(elixerB, max_elixer)
+    elixerTime -= 1/amount
+    print(elixerA, elixerB)
 
-    time_left -= timeSec
-    if time_left <= 0:
-        if healthA == healthB:
-            winner = "No one"
-        else:
-            winner = 1 if healthA > healthB else 2
-        show_menu(winner)
-        # Reset game state
-        healthA = 300
-        healthB = 300
-        elixerA = 0
-        elixerB = 0
-        Friendly.clear()
-        Enemy.clear()
-        timer = 0
-        elixerTime = 0
-        amount = 1
-        time_left = game_time
+time_left -= timeSec
+if time_left <= 0:
+    if healthA == healthB:
+        winner = "No one"
+    else:
+        winner = 1 if healthA > healthB else 2
+    show_menu(winner)
+    # Reset game state
+    healthA = 300
+    healthB = 300
+    elixerA = 0
+    elixerB = 0
+    Friendly.clear()
+    Enemy.clear()
+    timer = 0
+    elixerTime = 0
+    amount = 1
+    time_left = game_time
 
-    for event in pygame.event.get():
-        if event.type == QUIT:
-            running = False
+for event in pygame.event.get():
+    if event.type == QUIT:
+        running = False
     elif event.type == KEYDOWN:
             # Only allow spawning the cards that were selected, using 1-4
             if event.key == pygame.K_1 and len(selected_cards) > 0:
@@ -448,6 +445,5 @@ while running:
         amount = 1
         time_left = game_time
 
-show_menu()
 pygame.quit()
 sys.exit()
