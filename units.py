@@ -54,11 +54,11 @@ class Units:
             for enemy in enemies: # enemies is placeholder, list of enemy units
                 if not enemy.dead:
                     if self.side:
-                        if enemy.position > min and 0 <= self.position - enemy.position <= self.range:
+                        if enemy.position > min and -self.range <= self.position - enemy.position <= self.range:
                             closest = enemy
                             min = enemy.position
                     else:
-                        if enemy.position < min and 0 <= enemy.position - self.position <= self.range:
+                        if enemy.position < min and -self.range <= enemy.position - self.position <= self.range:
                             closest = enemy
                             min = enemy.position
         if closest == None:
