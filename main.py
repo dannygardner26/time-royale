@@ -53,8 +53,8 @@ while running:
     window.blit(background, (0, 0))
 
     # Draw towers at the very left and right ends
-    window.blit(tower_img, (0, HEIGHT - tower_img.get_height()))  # Left edge (Friendly tower)
-    window.blit(tower_img, (WIDTH - tower_img.get_width(), HEIGHT - tower_img.get_height()))  # Right edge (Enemy tower)
+    window.blit(tower_img, (0, HEIGHT - tower_img.get_height() - 80))  # Left edge (Friendly tower)
+    window.blit(tower_img, (WIDTH - tower_img.get_width(), HEIGHT - tower_img.get_height() - 80))  # Right edge (Enemy tower)
 
     # Now draw cards, units, health bars, etc.
     # Display all card images in a row with spacing
@@ -80,8 +80,8 @@ while running:
             window.blit(unit.image, (unit.position, HEIGHT - unit.image.get_height()-80))
 
     # Health bars (optional, drawn above towers)
-    pygame.draw.rect(window, (255, 0, 0), (100, 100, healthA, 10))
-    pygame.draw.rect(window, (255, 0, 0), (800, 100, healthB, 10))
+    pygame.draw.rect(window, (255, 0, 0), (100, 100, healthA/3, 10))
+    pygame.draw.rect(window, (255, 0, 0), (800, 100, healthB/3, 10))
 
     # Elixir bar settings
     max_elixer = 10
