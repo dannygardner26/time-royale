@@ -48,6 +48,7 @@ tower_img = pygame.transform.scale(
     (160, 240)  # width, height (adjust as needed to be bigger than the giant)
 )
 
+def spellify(image_path:str, enemies, damage):
 def show_menu(winner=None):
     window.fill((255, 255, 255))
     selected_card = 0
