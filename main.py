@@ -10,9 +10,7 @@ clock = pygame.time.Clock()
 window = pygame.display.set_mode((WIDTH, HEIGHT), 0, 32)
 pygame.display.set_caption('Python is cool!')
 window.fill((255, 255, 255))
-back = pygame.Surface((WIDTH, HEIGHT))
-background = back.convert()
-background.fill((255, 255, 255))
+background = pygame.image.load("assets/images/background.png")
 Friendly  = [] # attacks tower B
 Enemy = [] # attacks tower A
 healthA = 100
@@ -47,7 +45,7 @@ timer = 0
 elixerTime = 0
 amount = 1
 while running:
-    window.fill((255, 255, 255))
+    window.blit(background, (0, 0))
     # Display all card images in a row with spacing
     card_spacing = 20
     x = 50
@@ -62,13 +60,13 @@ while running:
             Friendly.remove(unit)
         else:
             healthB -= unit.update(Enemy)  # or knight.update() if you want to use your update logic
-            window.blit(unit.image, (unit.position, HEIGHT - unit.image.get_height()))
+            window.blit(unit.image, (unit.position, HEIGHT - unit.image.get_height()-80))
     for unit in Enemy:
         if unit.dead:
             Enemy.remove(unit)
         else:
             healthA -= unit.update(Friendly)  # or knight.update() if you want to use your update logic
-            window.blit(unit.image, (unit.position, HEIGHT - unit.image.get_height()))
+            window.blit(unit.image, (unit.position, HEIGHT - unit.image.get_height()-80))
     # Tower A / Friendly tower
     pygame.draw.rect(window, (255, 0, 0), (100, 100, healthA, 10))
     # Tower B / Enemy tower
