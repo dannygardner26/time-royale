@@ -45,6 +45,7 @@ tower_img = pygame.transform.scale(
     (160, 240)  # width, height (adjust as needed to be bigger than the giant)
 )
 
+def spellify(image_path:str, enemies, damage):
 def show_menu(winner=None):
     window.fill((255, 255, 255))
     if winner is None:
@@ -161,6 +162,8 @@ while running:
             elif event.key == pygame.K_4 and elixerA >= 5:
                 Friendly.append(units.Units(random.random(), "assets\images\giantframe1.png", 100, 15, 20, 2, 5, False))
                 elixerA -= 5
+            elif event.key == pygame.K_5 and elixerA >= 3:
+                
                 ##GOOD GUYS^^
                 ##BAD GUYS VVV
             elif event.key == pygame.K_7 and elixerB >= 3:    

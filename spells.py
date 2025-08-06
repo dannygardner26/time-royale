@@ -12,5 +12,5 @@ class Spells:
             if not enemy.dead:
                     if abs(self.location - enemy.position) <= self.radius:
                         enemy.takeDamage(self.damage)
-    def cast(self, enemies):
+    def update(self, enemies):
         self.dealDamage(enemies)
