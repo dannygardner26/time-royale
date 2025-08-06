@@ -69,9 +69,9 @@ while running:
     pygame.draw.rect(window, (255, 0, 0), (100, 100, healthA, 10))
     # Tower B / Enemy tower
     pygame.draw.rect(window, (255, 0, 0), (800, 100, healthB, 10))
-
+    window.blit(assets\images\pixil-frame-0 (10).png, (100, HEIGHT - 200)) 
     pygame.display.update()
-
+    window.blit(tower_img_B, (800, HEIGHT - 200))
     timePassed = clock.tick(30)
     timeSec = timePassed / 1000.0
     player.x += player.move * timeSec
