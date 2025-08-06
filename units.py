@@ -28,7 +28,7 @@ class Units:
         self.damage = damage
         self.speed = speed
         self.range = range
-        self.position = 100 + 800 * side
+        self.position = 100 + 720 * side
         self.side = side
         self.attackRate = attackRate
         self.aCounter = 0
@@ -37,7 +37,7 @@ class Units:
         # change position
         if self.side and self.position >= 100:
             self.position -= self.speed
-        elif self.position <= 900:
+        elif self.position <= 820:
             self.position += self.speed
     def takeDamage(self, amount:int):
         self.health -= amount
@@ -54,7 +54,7 @@ class Units:
             if self.side:
                 min = 100 # minimal distance from "me" 
             else:
-                min = 900
+                min = 820
             for enemy in enemies: # enemies is placeholder, list of enemy units
                 if not enemy.dead:
                     if self.side:
@@ -69,7 +69,7 @@ class Units:
             if self.side:
                 if self.position - 100 <= self.range:
                     closest = 'A'
-            elif 900 - self.position <= self.range:
+            elif 820 - self.position <= self.range:
                 closest = 'B'
         return closest
     def inRange(self, enemy : "Units") -> bool:

@@ -90,19 +90,19 @@ while running:
     # Titles (centered)
     player1_text = font.render("Player 1", True, (0, 0, 0))
     player2_text = font.render("Player 2", True, (0, 0, 0))
-    window.blit(player1_text, (left_center_x - player1_text.get_width() // 2, 40))
-    window.blit(player2_text, (right_center_x - player2_text.get_width() // 2, 40))
+    window.blit(player1_text, (left_center_x - player1_text.get_width() // 2, 80))
+    window.blit(player2_text, (right_center_x - player2_text.get_width() // 2, 80))
 
     # Health bars (centered)
-    pygame.draw.rect(window, (255, 0, 0), (left_center_x - bar_width // 2, 70, bar_width * healthA / 300, 10))
-    pygame.draw.rect(window, (255, 0, 0), (right_center_x - bar_width // 2, 70, bar_width * healthB / 300, 10))
+    pygame.draw.rect(window, (255, 0, 0), (left_center_x - bar_width // 2, 20, bar_width * healthA / 300, 10))
+    pygame.draw.rect(window, (255, 0, 0), (right_center_x - bar_width // 2, 20, bar_width * healthB / 300, 10))
 
     # Elixir bars (centered, under health bars)
     max_elixer = 10
-    pygame.draw.rect(window, (128, 128, 128), (left_center_x - bar_width // 2, 90, bar_width, bar_height))  # background left
-    pygame.draw.rect(window, (102, 0, 204), (left_center_x - bar_width // 2, 90, int(bar_width * min(elixerA, max_elixer) / max_elixer), bar_height))  # fill left
-    pygame.draw.rect(window, (128, 128, 128), (right_center_x - bar_width // 2, 90, bar_width, bar_height))  # background right
-    pygame.draw.rect(window, (204, 0, 102), (right_center_x - bar_width // 2, 90, int(bar_width * min(elixerB, max_elixer) / max_elixer), bar_height))  # fill right
+    pygame.draw.rect(window, (128, 128, 128), (left_center_x - bar_width // 2, 40, bar_width, bar_height))  # background left
+    pygame.draw.rect(window, (102, 0, 204), (left_center_x - bar_width // 2, 40, int(bar_width * min(elixerA, max_elixer) / max_elixer), bar_height))  # fill left
+    pygame.draw.rect(window, (128, 128, 128), (right_center_x - bar_width // 2, 40, bar_width, bar_height))  # background right
+    pygame.draw.rect(window, (204, 0, 102), (right_center_x - bar_width // 2, 40, int(bar_width * min(elixerB, max_elixer) / max_elixer), bar_height))  # fill right
 
     # Cards (centered, below bars)
     card_spacing = 20
