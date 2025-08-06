@@ -129,23 +129,6 @@ while running:
             healthA -= unit.update(Friendly)
             window.blit(unit.image, (unit.position, HEIGHT - unit.image.get_height()-80))
 
-    # Health bars (optional, drawn above towers)
-    pygame.draw.rect(window, (255, 0, 0), (100, 100, healthA/3, 10))
-    pygame.draw.rect(window, (255, 0, 0), (800, 100, healthB/3, 10))
-
-    # Elixir bar settings
-    max_elixer = 10
-    bar_width = 200
-    bar_height = 20
-
-    # Friendly elixir bar (under health bar, left)
-    pygame.draw.rect(window, (128, 128, 128), (100, 120, bar_width, bar_height))  # background
-    pygame.draw.rect(window, (102, 0, 204), (100, 120, int(bar_width * min(elixerA, max_elixer) / max_elixer), bar_height))  # fill
-
-    # Enemy elixir bar (under health bar, right)
-    pygame.draw.rect(window, (128, 128, 128), (800, 120, bar_width, bar_height))  # background
-    pygame.draw.rect(window, (204, 0, 102), (800, 120, int(bar_width * min(elixerB, max_elixer) / max_elixer), bar_height))  # fill
-
     pygame.display.update()
     timePassed = clock.tick(30)
     timeSec = timePassed / 1000.0
