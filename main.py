@@ -10,9 +10,7 @@ clock = pygame.time.Clock()
 window = pygame.display.set_mode((WIDTH, HEIGHT), 0, 32)
 pygame.display.set_caption('Python is cool!')
 window.fill((255, 255, 255))
-back = pygame.Surface((WIDTH, HEIGHT))
-background = back.convert()
-background.fill((255, 255, 255))
+background = pygame.image.load("assets/images/background.png")
 Friendly  = [] # attacks tower B
 Enemy = [] # attacks tower A
 healthA = 300
@@ -79,7 +77,7 @@ amount = 1
 show_menu()  # Show menu before starting the game
 
 while running:
-    window.fill((255, 255, 255))
+    window.blit(background, (0, 0))
 
     # Draw towers at the very left and right ends
     window.blit(tower_img, (0, HEIGHT - tower_img.get_height()))  # Left edge (Friendly tower)
@@ -122,14 +120,14 @@ while running:
         if unit.dead:
             Friendly.remove(unit)
         else:
-            healthB -= unit.update(Enemy)
-            window.blit(unit.image, (unit.position, HEIGHT - unit.image.get_height()))
+            healthB -= unit.update(Enemy)  # or knight.update() if you want to use your update logic
+            window.blit(unit.image, (unit.position, HEIGHT - unit.image.get_height()-80))
     for unit in Enemy:
         if unit.dead:
             Enemy.remove(unit)
         else:
             healthA -= unit.update(Friendly)
-            window.blit(unit.image, (unit.position, HEIGHT - unit.image.get_height()))
+            window.blit(unit.image, (unit.position, HEIGHT - unit.image.get_height()-80))
 
     pygame.display.update()
     timePassed = clock.tick(30)
