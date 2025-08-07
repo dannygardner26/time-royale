@@ -10,3 +10,7 @@ In game:
     7, 8, 9, 0 for the right side
 Game over:
     press space to play again
+
+Sources
+https://www.deckshop.pro/card/list - Card list 
+Custom created rest of assets
