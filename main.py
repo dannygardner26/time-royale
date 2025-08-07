@@ -48,7 +48,7 @@ tower_img = pygame.transform.scale(
     (160, 240)  # width, height (adjust as needed to be bigger than the giant)
 )
 
-def spellify(image_path:str, enemies, damage):
+# def spellify(image_path:str, enemies, damage):
 def show_menu(winner=None):
     window.fill((255, 255, 255))
     selected_card = 0
@@ -223,20 +223,20 @@ for event in pygame.event.get():
             if event.key == pygame.K_1 and len(selected_cards) > 0:
                 idx = selected_cards[0]
                 if idx == 0 and elixerA >= 3:
-                    Friendly.append(units.Units(1, "assets/images/knightframe1.png", 70, 10, 10, 5, 10, False))
+                    Friendly.append(units.Units(random.random(), "assets/images/knightframe1.png", 70, 10, 10, 5, 10, False))
                     elixerA -= 3
                 elif idx == 1 and elixerA >= 3:
-                    Friendly.append(units.Units(2, "assets/images/archersframe1.png", 60, 5, 12, 6, 200, False))
+                    Friendly.append(units.Units(random.random(), "assets/images/archersframe1.png", 60, 5, 12, 6, 200, False))
                     elixerA -= 3
                 elif idx == 2 and elixerA >= 2:
-                    Friendly.append(units.Units(3, "assets/images/goblinframe1.png", 50, 5, 15, 15, 8, False))
+                    Friendly.append(units.Units(random.random(), "assets/images/goblinframe1.png", 50, 5, 15, 15, 8, False))
                     elixerA -= 2
                 elif idx == 3 and elixerA >= 5:
-                    Friendly.append(units.Units(4, "assets/images/giantframe1.png", 100, 8, 20, 2, 5, False))
+                    Friendly.append(units.Units(random.random(), "assets/images/giantframe1.png", 100, 8, 20, 2, 5, False))
                     elixerA -= 5
                 elif idx == 4 and elixerA >= 4:  # Cannon Cart (example cost: 4)
                     Friendly.append(units.Units(
-                        5,  # unique id for cannon cart
+                        random.random(),  # unique id for cannon cart
                         "assets/images/cannoncart.png",
                         80,   # health (example)
                         12,   # damage (example)
@@ -249,20 +249,20 @@ for event in pygame.event.get():
             elif event.key == pygame.K_2 and len(selected_cards) > 1:
                 idx = selected_cards[1]
                 if idx == 0 and elixerA >= 3:
-                    Friendly.append(units.Units(1, "assets/images/knightframe1.png", 70, 10, 10, 5, 10, False))
+                    Friendly.append(units.Units(random.random(), "assets/images/knightframe1.png", 70, 10, 10, 5, 10, False))
                     elixerA -= 3
                 elif idx == 1 and elixerA >= 3:
-                    Friendly.append(units.Units(2, "assets/images/archersframe1.png", 60, 5, 12, 6, 200, False))
+                    Friendly.append(units.Units(random.random(), "assets/images/archersframe1.png", 60, 5, 12, 6, 200, False))
                     elixerA -= 3
                 elif idx == 2 and elixerA >= 2:
-                    Friendly.append(units.Units(3, "assets/images/goblinframe1.png", 50, 5, 15, 15, 8, False))
+                    Friendly.append(units.Units(random.random(), "assets/images/goblinframe1.png", 50, 5, 15, 15, 8, False))
                     elixerA -= 2
                 elif idx == 3 and elixerA >= 5:
-                    Friendly.append(units.Units(4, "assets/images/giantframe1.png", 100, 8, 20, 2, 5, False))
+                    Friendly.append(units.Units(random.random(), "assets/images/giantframe1.png", 100, 8, 20, 2, 5, False))
                     elixerA -= 5
                 elif idx == 4 and elixerA >= 4:  # Cannon Cart (example cost: 4)
                     Friendly.append(units.Units(
-                        5,  # unique id for cannon cart
+                        random.random(),  # unique id for cannon cart
                         "assets/images/cannoncart.png",
                         80,   # health (example)
                         12,   # damage (example)
@@ -275,20 +275,20 @@ for event in pygame.event.get():
             elif event.key == pygame.K_3 and len(selected_cards) > 2:
                 idx = selected_cards[2]
                 if idx == 0 and elixerA >= 3:
-                    Friendly.append(units.Units(1, "assets/images/knightframe1.png", 70, 10, 10, 5, 10, False))
+                    Friendly.append(units.Units(random.random(), "assets/images/knightframe1.png", 70, 10, 10, 5, 10, False))
                     elixerA -= 3
                 elif idx == 1 and elixerA >= 3:
-                    Friendly.append(units.Units(2, "assets/images/archersframe1.png", 60, 5, 12, 6, 200, False))
+                    Friendly.append(units.Units(random.random(), "assets/images/archersframe1.png", 60, 5, 12, 6, 200, False))
                     elixerA -= 3
                 elif idx == 2 and elixerA >= 2:
-                    Friendly.append(units.Units(3, "assets/images/goblinframe1.png", 50, 5, 15, 15, 8, False))
+                    Friendly.append(units.Units(random.random(), "assets/images/goblinframe1.png", 50, 5, 15, 15, 8, False))
                     elixerA -= 2
                 elif idx == 3 and elixerA >= 5:
-                    Friendly.append(units.Units(4, "assets/images/giantframe1.png", 100, 8, 20, 2, 5, False))
+                    Friendly.append(units.Units(random.random(), "assets/images/giantframe1.png", 100, 8, 20, 2, 5, False))
                     elixerA -= 5
                 elif idx == 4 and elixerA >= 4:  # Cannon Cart (example cost: 4)
                     Friendly.append(units.Units(
-                        5,  # unique id for cannon cart
+                        random.random(),  # unique id for cannon cart
                         "assets/images/cannoncart.png",
                         80,   # health (example)
                         12,   # damage (example)
@@ -301,20 +301,20 @@ for event in pygame.event.get():
             elif event.key == pygame.K_4 and len(selected_cards) > 3:
                 idx = selected_cards[3]
                 if idx == 0 and elixerA >= 3:
-                    Friendly.append(units.Units(1, "assets/images/knightframe1.png", 70, 10, 10, 5, 10, False))
+                    Friendly.append(units.Units(random.random(), "assets/images/knightframe1.png", 70, 10, 10, 5, 10, False))
                     elixerA -= 3
                 elif idx == 1 and elixerA >= 3:
-                    Friendly.append(units.Units(2, "assets/images/archersframe1.png", 60, 5, 12, 6, 200, False))
+                    Friendly.append(units.Units(random.random(), "assets/images/archersframe1.png", 60, 5, 12, 6, 200, False))
                     elixerA -= 3
                 elif idx == 2 and elixerA >= 2:
-                    Friendly.append(units.Units(3, "assets/images/goblinframe1.png", 50, 5, 15, 15, 8, False))
+                    Friendly.append(units.Units(random.random(), "assets/images/goblinframe1.png", 50, 5, 15, 15, 8, False))
                     elixerA -= 2
                 elif idx == 3 and elixerA >= 5:
-                    Friendly.append(units.Units(4, "assets/images/giantframe1.png", 100, 8, 20, 2, 5, False))
+                    Friendly.append(units.Units(random.random(), "assets/images/giantframe1.png", 100, 8, 20, 2, 5, False))
                     elixerA -= 5
                 elif idx == 4 and elixerA >= 4:  # Cannon Cart (example cost: 4)
                     Friendly.append(units.Units(
-                        5,  # unique id for cannon cart
+                        random.random(),  # unique id for cannon cart
                         "assets/images/cannoncart.png",
                         80,   # health (example)
                         12,   # damage (example)
@@ -328,20 +328,20 @@ for event in pygame.event.get():
             if event.key == pygame.K_5 and len(selected_cards) > 0:
                 idx = selected_cards[0]
                 if idx == 0 and elixerB >= 3:
-                    Enemy.append(units.Units(1, "assets/images/knightframe1.png", 70, 10, 10, 5, 10, True))
+                    Enemy.append(units.Units(random.random(), "assets/images/knightframe1.png", 70, 10, 10, 5, 10, True))
                     elixerB -= 3
                 elif idx == 1 and elixerB >= 3:
-                    Enemy.append(units.Units(2, "assets/images/archersframe1.png", 60, 5, 12, 6, 200, True))
+                    Enemy.append(units.Units(random.random(), "assets/images/archersframe1.png", 60, 5, 12, 6, 200, True))
                     elixerB -= 3
                 elif idx == 2 and elixerB >= 2:
-                    Enemy.append(units.Units(3, "assets/images/goblinframe1.png", 50, 5, 15, 15, 8, True))
+                    Enemy.append(units.Units(random.random(), "assets/images/goblinframe1.png", 50, 5, 15, 15, 8, True))
                     elixerB -= 2
                 elif idx == 3 and elixerB >= 5:
-                    Enemy.append(units.Units(4, "assets/images/giantframe1.png", 100, 8, 20, 2, 5, True))
+                    Enemy.append(units.Units(random.random(), "assets/images/giantframe1.png", 100, 8, 20, 2, 5, True))
                     elixerB -= 5
                 elif idx == 4 and elixerB >= 4:  # Cannon Cart (example cost: 4)
                     Enemy.append(units.Units(
-                        5,
+                        random.random(),
                         "assets/images/cannoncart.png",
                         80,  # health
                         12,  # damage
@@ -354,20 +354,20 @@ for event in pygame.event.get():
             elif event.key == pygame.K_6 and elixerB >= 3 and len(selected_cards) > 1:
                 idx = selected_cards[1]
                 if idx == 0:
-                    Enemy.append(units.Units(1, "assets/images/knightframe1.png", 70, 10, 10, 5, 10, True))
+                    Enemy.append(units.Units(random.random(), "assets/images/knightframe1.png", 70, 10, 10, 5, 10, True))
                     elixerB -= 3
                 elif idx == 1:
-                    Enemy.append(units.Units(2, "assets/images/archersframe1.png", 60, 5, 12, 6, 200, True))
+                    Enemy.append(units.Units(random.random(), "assets/images/archersframe1.png", 60, 5, 12, 6, 200, True))
                     elixerB -= 3
                 elif idx == 2:
-                    Enemy.append(units.Units(3, "assets/images/goblinframe1.png", 50, 5, 15, 15, 8, True))
+                    Enemy.append(units.Units(random.random(), "assets/images/goblinframe1.png", 50, 5, 15, 15, 8, True))
                     elixerB -= 2
                 elif idx == 3:
-                    Enemy.append(units.Units(4, "assets/images/giantframe1.png", 100, 8, 20, 2, 5, True))
+                    Enemy.append(units.Units(random.random(), "assets/images/giantframe1.png", 100, 8, 20, 2, 5, True))
                     elixerB -= 5
                 elif idx == 4 and elixerB >= 4:  # Cannon Cart (example cost: 4)
                     Enemy.append(units.Units(
-                        5,
+                        random.random(),
                         "assets/images/cannoncart.png",
                         80,  # health
                         12,  # damage
@@ -380,20 +380,20 @@ for event in pygame.event.get():
             elif event.key == pygame.K_7 and elixerB >= 2 and len(selected_cards) > 2:
                 idx = selected_cards[2]
                 if idx == 0:
-                    Enemy.append(units.Units(1, "assets/images/knightframe1.png", 70, 10, 10, 5, 10, True))
+                    Enemy.append(units.Units(random.random(), "assets/images/knightframe1.png", 70, 10, 10, 5, 10, True))
                     elixerB -= 3
                 elif idx == 1:
-                    Enemy.append(units.Units(2, "assets/images/archersframe1.png", 60, 5, 12, 6, 200, True))
+                    Enemy.append(units.Units(random.random(), "assets/images/archersframe1.png", 60, 5, 12, 6, 200, True))
                     elixerB -= 3
                 elif idx == 2:
-                    Enemy.append(units.Units(3, "assets/images/goblinframe1.png", 50, 5, 15, 15, 8, True))
+                    Enemy.append(units.Units(random.random(), "assets/images/goblinframe1.png", 50, 5, 15, 15, 8, True))
                     elixerB -= 2
                 elif idx == 3:
-                    Enemy.append(units.Units(4, "assets/images/giantframe1.png", 100, 8, 20, 2, 5, True))
+                    Enemy.append(units.Units(random.random(), "assets/images/giantframe1.png", 100, 8, 20, 2, 5, True))
                     elixerB -= 5
                 elif idx == 4 and elixerB >= 4:  # Cannon Cart (example cost: 4)
                     Enemy.append(units.Units(
-                        5,
+                        random.random(),
                         "assets/images/cannoncart.png",
                         80,  # health
                         12,  # damage
@@ -406,20 +406,20 @@ for event in pygame.event.get():
             elif event.key == pygame.K_8 and elixerB >= 5 and len(selected_cards) > 3:
                 idx = selected_cards[3]
                 if idx == 0:
-                    Enemy.append(units.Units(1, "assets/images/knightframe1.png", 70, 10, 10, 5, 10, True))
+                    Enemy.append(units.Units(random.random(), "assets/images/knightframe1.png", 70, 10, 10, 5, 10, True))
                     elixerB -= 3
                 elif idx == 1:
-                    Enemy.append(units.Units(2, "assets/images/archersframe1.png", 60, 5, 12, 6, 200, True))
+                    Enemy.append(units.Units(random.random(), "assets/images/archersframe1.png", 60, 5, 12, 6, 200, True))
                     elixerB -= 3
                 elif idx == 2:
-                    Enemy.append(units.Units(3, "assets/images/goblinframe1.png", 50, 5, 15, 15, 8, True))
+                    Enemy.append(units.Units(random.random(), "assets/images/goblinframe1.png", 50, 5, 15, 15, 8, True))
                     elixerB -= 2
                 elif idx == 3:
-                    Enemy.append(units.Units(4, "assets/images/giantframe1.png", 100, 8, 20, 2, 5, True))
+                    Enemy.append(units.Units(random.random(), "assets/images/giantframe1.png", 100, 8, 20, 2, 5, True))
                     elixerB -= 5
                 elif idx == 4 and elixerB >= 4:  # Cannon Cart (example cost: 4)
                     Enemy.append(units.Units(
-                        5,
+                        random.random(),
                         "assets/images/cannoncart.png",
                         80,  # health
                         12,  # damage
