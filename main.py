@@ -49,6 +49,9 @@ tower_img = pygame.transform.scale(
 )
 
 def spellify(image_path:str, enemies, damage):
+    # TODO: Implement spell logic here
+    pass
+
 def show_menu(winner=None):
     window.fill((255, 255, 255))
     selected_card = 0
