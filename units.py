@@ -1,9 +1,9 @@
 import pygame
-from pygame.locals import*
 
 
 class Units:
-    def __init__(self, id:int, image_path:str, health:int, damage:int, attackRate:int, speed:int, range:int, side:bool, start=None):
+    def __init__(self, id: float, image_path: str, health: int, damage: int, attackRate: int, speed: int, range: int,
+                 side: bool, start=None):
         self.tpriority = False
         self.splash = 0
         # Set different sizes for different units
@@ -13,12 +13,12 @@ class Units:
             self.tpriority = True
             size = (100, 150)  # Make the giant bigger
         elif "goblin" in image_path:
-            size = (40, 60)    # Goblin smaller
+            size = (40, 60)  # Goblin smaller
         elif "wizard" in image_path:
             self.splash = 20
-            size = None        # Change this
+            size = None  # Change this
         else:
-            size = (60, 90)    # Default size
+            size = (60, 90)  # Default size
 
         img = pygame.image.load(image_path).convert_alpha()
         img = pygame.transform.scale(img, size)
@@ -32,7 +32,7 @@ class Units:
         self.damage = damage
         self.speed = speed
         self.range = range
-        if start != None:
+        if start is not None:
             self.position = start
         else:
             self.position = 100 + 720 * side
@@ -40,41 +40,46 @@ class Units:
         self.attackRate = attackRate
         self.aCounter = 0
         self.curTarget = None
+
     def move(self):
         # change position
         if self.side and self.position >= 100:
             self.position -= self.speed
         elif self.position <= 820:
             self.position += self.speed
-    def takeDamage(self, amount:int):
+
+    def takeDamage(self, amount: float):
         self.health -= amount
         if self.health <= 0:
             self.dead = True
             # print(self.id, "deaded") # debug code 
-    def attack(self, target : "Units", enemies : list["Units"]):
+
+    def attack(self, target: "Units", enemies: list["Units"]):
         self.aCounter += 1
         if self.aCounter % self.attackRate == 0:
             target.takeDamage(self.damage)
             if self.splash > 0:
                 self.splashAttack(enemies)
-    def splashAttack(self, enemies : list["Units"]):
+
+    def splashAttack(self, enemies: list["Units"]):
         splashCenter = self.curTarget.position
         for enemy in enemies:
             if not enemy.dead:
                 if self.side:
                     if -self.splash <= splashCenter - enemy.position <= self.splash:
-                        enemy.takeDamage(self.damage/2)
+                        enemy.takeDamage(self.damage / 2)
                 else:
                     if -self.splash <= enemy.position - splashCenter <= self.splash:
-                        enemy.takeDamage(self.damage/2)
-    def getTarget(self, enemies : list["Units"]) -> "Units":
+                        enemy.takeDamage(self.damage / 2)
+
+    def getTarget(self, enemies: list["Units"]) -> "Units":
         closest = None
         if not self.tpriority:
             if self.side:
-                min = 100 # minimal distance from "me" 
+                min = 100  # minimal distance from "me"
             else:
                 min = 820
-            for enemy in enemies: # enemies is placeholder, list of enemy units
+            for enemy in enemies:  # enemies is placeholder, list of enemy units
                 if not enemy.dead:
                     if self.side:
                         if enemy.position > min and -self.range <= self.position - enemy.position <= self.range:
@@ -84,14 +89,15 @@ class Units:
                         if enemy.position < min and -self.range <= enemy.position - self.position <= self.range:
                             closest = enemy
                             min = enemy.position
-        if closest == None:
+        if closest is None:
             if self.side:
                 if self.position - 100 <= self.range:
                     closest = 'A'
             elif 820 - self.position <= self.range:
                 closest = 'B'
         return closest
-    def inRange(self, enemy : "Units") -> bool:
+
+    def inRange(self, enemy: "Units") -> bool:
         if self.side:
             if 0 <= self.position - enemy.position <= self.range:
                 # print(self.id, "case uno")
@@ -102,10 +108,11 @@ class Units:
                 return True
         # print(self.id, "case tres")
         return False
-    def update(self, enemies : list["Units"]) -> int:
+
+    def update(self, enemies: list["Units"]) -> int:
         # pass a list of enemy units to this function
         if not self.dead:
-            if self.curTarget != None:
+            if self.curTarget is not None:
                 if self.curTarget == 'A' or self.curTarget == 'B':
                     self.aCounter += 1
                     if self.aCounter % self.attackRate == 0:
@@ -122,6 +129,6 @@ class Units:
             else:
                 self.curTarget = self.getTarget(enemies)
                 # print(self.id, self.curTarget)
-                if self.curTarget == None:
+                if self.curTarget is None:
                     self.move()
         return 0
