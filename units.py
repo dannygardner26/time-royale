@@ -2,27 +2,27 @@ import pygame
 
 
 class Units:
-    def __init__(self, id: float, image_path: str, health: int, damage: int, attackRate: int, speed: int, range: int,
+    def __init__(self, id: float, imagePath: str, health: int, damage: int, attackRate: int, speed: int, range: int,
                  side: bool, start=None):
-        self.tpriority = False
+        self.tPriority = False
         self.splash = 0
         # Set different sizes for different units
-        if "knight" in image_path:
+        if "knight" in imagePath:
             size = (80, 120)  # Make the knight taller (width, height)
-        elif "giant" in image_path:
-            self.tpriority = True
+        elif "giant" in imagePath:
+            self.tPriority = True
             size = (100, 150)  # Make the giant bigger
-        elif "goblin" in image_path:
+        elif "goblin" in imagePath:
             size = (40, 60)  # Goblin smaller
-        elif "wizard" in image_path:
-            self.splash = 50
+        elif "wizard" in imagePath:
+            self.splash = 30
             size = (80, 80)
-        elif "cannoncart" in image_path:
+        elif "cannoncart" in imagePath:
             size = (60, 60)
         else:
             size = (60, 90)  # Default size
 
-        img = pygame.image.load(image_path).convert_alpha()
+        img = pygame.image.load(imagePath).convert_alpha()
         img = pygame.transform.scale(img, size)
         if side:  # If this is an enemy, flip horizontally
             img = pygame.transform.flip(img, True, False)
@@ -76,7 +76,7 @@ class Units:
 
     def getTarget(self, enemies: list["Units"]) -> "Units":
         closest = None
-        if not self.tpriority:
+        if not self.tPriority:
             if self.side:
                 min = 100  # minimal distance from "me"
             else:
