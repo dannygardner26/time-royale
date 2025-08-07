@@ -17,6 +17,8 @@ class Units:
         elif "wizard" in image_path:
             self.splash = 20
             size = None  # Change this
+        elif "cannoncart" in image_path:
+            size = (60, 60)
         else:
             size = (60, 90)  # Default size
 

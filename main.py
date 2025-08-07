@@ -26,21 +26,6 @@ font = pygame.font.SysFont(None, 32)
 game_time = 45  # seconds
 time_left = game_time
 
-# class Player:
-#     def __init__(self):
-#         self.size = 20
-#         self.speed = 250
-#         self.move = 0
-#         self.height = 50
-#         self.width = 100
-#         self.x = WIDTH / 2 - self.size / 2
-#         self.y = HEIGHT - self.height
-#         self.image = pygame.Surface((self.width, self.height)).convert()
-#         self.image.fill((0, 255, 255))
-#
-#
-# player = Player()
-
 card_images = [
     pygame.transform.scale(pygame.image.load("assets/images/knightcard.png"), (60, 90)),
     pygame.transform.scale(pygame.image.load("assets/images/archercard.png"), (60, 90)),
@@ -75,7 +60,7 @@ def show_menu(winner=None):
         window.fill((255, 255, 255))
         if winner is None:
             title = font.render("CLASH UNROYALE", True, (0, 0, 0))
-            prompt = font.render("< > to move, ENTER to select/deselect (max 4), SPACE to start, TAB for 1p mode", True, (0, 0, 0))
+            prompt = font.render("< > to move, ENTER to select/deselect (max 4), SPACE to start, TAB to select bot level", True, (0, 0, 0))
             window.blit(title, (WIDTH // 2 - title.get_width() // 2, HEIGHT // 2 - 100))
             window.blit(prompt, (WIDTH // 2 - prompt.get_width() // 2, HEIGHT // 2 - 60))
 
@@ -95,7 +80,15 @@ def show_menu(winner=None):
                     pygame.draw.rect(window, (0, 200, 0), (x - 4, y - 4, img.get_width() + 8, img.get_height() + 8), 3)
                 x += img.get_width() + card_spacing
             # Draw bot indicator
-            pygame.draw.rect(window, (255*bot, 0, 0), (0, 0, 100, 100))
+            if bot == 0:
+                botimg = pygame.image.load("assets/images/robotoff.png")
+            elif bot == 1:
+                botimg = pygame.image.load("assets/images/roboteasy.png")
+            elif bot == 2:
+                botimg = pygame.image.load("assets/images/robotmedium.png")
+            else:
+                botimg = pygame.image.load("assets/images/robothard.png")
+            window.blit(botimg, (0, 0))
         else:
             if winner == "No one":
                 win_text = font.render("Draw!", True, (0, 0, 0))
@@ -125,7 +118,9 @@ def show_menu(winner=None):
                     elif event.key == pygame.K_SPACE and len(selected_cards) >= 1:
                         return selected_cards  # Start game with selected cards
                     elif event.key == pygame.K_TAB:
-                        bot = not bot
+                        bot += 1
+                        if bot > 3:
+                            bot = 0
             else:
                 if event.type == KEYDOWN and event.key == pygame.K_SPACE:
                     return None  # Restarts game when someone loses
@@ -164,7 +159,7 @@ def run_game(selected_cards):
 
         # Titles (centered)
         player1_text = font.render("Player 1", True, (0, 0, 0))
-        if bot:
+        if bot > 0:
             player2_text = font.render("Bot", True, (0, 0, 0))
         else:
             player2_text = font.render("Player 2", True, (0, 0, 0))
@@ -230,11 +225,18 @@ def run_game(selected_cards):
         # player.x += player.move * timeSec
         if elixerTime >= 1 / amount:
             elixerA += 1
-            elixerB += 1
+            if bot == 0:
+                elixerB += 1
+            elif bot == 1:
+                elixerB += 0.75
+            elif bot == 2:
+                elixerB += 1
+            elif bot == 3:
+                elixerB += 1.5
             elixerA = min(elixerA, max_elixer)
             elixerB = min(elixerB, max_elixer)
             elixerTime -= 1 / amount
-            # print(elixerA, elixerB)
+            print(elixerA, elixerB)
 
         time_left -= timeSec
         if time_left <= 0 or healthA <= 0 or healthB <= 0:
@@ -248,10 +250,10 @@ def run_game(selected_cards):
             return winner  # Exit the loop and return the winner
 
         # spawning bot units; bot randomly chooses
-        if bot:
+        if bot > 0:
             if botid < 0:
                 botid = selected_cards[random.randint(0, len(selected_cards)-1)]
-                print(botid, len(selected_cards))
+                # print(botid, len(selected_cards))
             else:
                 if botid == 0 and elixerB >= 3:
                     Enemy.append(
@@ -475,7 +477,7 @@ def run_game(selected_cards):
 
 
 pygame.display.update()
-bot = False
+bot = 0
 
 # --- Main program starts here ---
 while True:
