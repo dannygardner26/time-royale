@@ -4,7 +4,7 @@ import pygame
 import sys
 from pygame.locals import *
 
-import units
+from assets.units import archer, cannoncart, giant, goblin, knight, wizard
 
 # Set up the game
 pygame.init()
@@ -16,8 +16,6 @@ window = pygame.display.set_mode((WIDTH, HEIGHT), 0, 32)
 pygame.display.set_caption('Clash Unroyale')
 window.fill((255, 255, 255))
 background = pygame.image.load("assets/images/background.png")
-friendly = []  # attacks tower B
-enemy = []  # attacks tower A
 font = pygame.font.SysFont(None, 32)
 gameTime = 45  # seconds
 
@@ -56,19 +54,19 @@ def spellify(image_path: str, enemies, damage, radius, location, side=False):
 
 
 def getTarget(side, enemies):
-        if side:
-            min = 100  # minimal distance from "me"
-        else:
-            min = 820
-        for enemy in enemies:  # list of enemy units
-            if not enemy.dead:
-                if side:
-                    if enemy.position > min:
-                        min = enemy.position
-                else:
-                    if enemy.position < min:
-                        min = enemy.position
-        return min
+    if side:
+        min = 100  # minimal distance from "me"
+    else:
+        min = 820
+    for enemy in enemies:  # list of enemy units
+        if not enemy.dead:
+            if side:
+                if enemy.position > min:
+                    min = enemy.position
+            else:
+                if enemy.position < min:
+                    min = enemy.position
+    return min
 
 
 # Displays the card selection menu and game over menu; QUIT event closes the game\
@@ -127,14 +125,15 @@ def showMenu(winner=None):
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
-            if selecting: # Allows the player to select cards
+            if selecting:  # Allows the player to select cards
                 if event.type == KEYDOWN:
                     if event.key == pygame.K_LEFT:
-                        selectedCard = (selectedCard - 1) % len(cardImages) # allows the player move between images to select diffrent cards
+                        # allows the player move between images to select different cards
+                        selectedCard = (selectedCard - 1) % len(cardImages)
                     elif event.key == pygame.K_RIGHT:
                         selectedCard = (selectedCard + 1) % len(cardImages)
                     elif event.key == pygame.K_RETURN:
-                        if selectedCard in selectedCards: # uses diffrent logic to select and deselect cards
+                        if selectedCard in selectedCards:  # uses different logic to select and deselect cards
                             selectedCards.remove(selectedCard)
                         elif len(selectedCards) < 4:
                             selectedCards.append(selectedCard)
@@ -151,7 +150,6 @@ def showMenu(winner=None):
 
 # runs the game; QUIT event returns user(s) to menu
 def run_game(selectedCards):
-    global healthA, healthB, elixerA, elixerB, timer, elixerTime, amount, timeLeft, friendly, enemy
     # Reset game state
     healthA = 300
     healthB = 300
@@ -165,55 +163,42 @@ def run_game(selectedCards):
     timeLeft = gameTime
     botId = -1
 
-
     def spawn(idx, elixer, side):
         if idx == 0 and elixer >= 3:
             if side:
-                enemy.append(
-                    units.Units(random.random(), "assets/images/knightframe1.png", 170, 20, 36, 5, 12, side))
+                enemy.append(knight.Knight(random.random(), side))
             else:
-                friendly.append(
-                    units.Units(random.random(), "assets/images/knightframe1.png", 170, 20, 36, 5, 12, side))
+                friendly.append(knight.Knight(random.random(), side))
             return 3, 0
         elif idx == 1 and elixer >= 3:
             if side:
-                enemy.append(
-                    units.Units(random.random(), "assets/images/archersframe1.png", 30, 11, 27, 5, 100, side))
+                enemy.append(archer.Archer(random.random(), side))
             else:
-                friendly.append(
-                    units.Units(random.random(), "assets/images/archersframe1.png", 30, 11, 27, 5, 100, side))
+                friendly.append(archer.Archer(random.random(), side))
             return 3, 0
         elif idx == 2 and elixer >= 2:
             if side:
-                enemy.append(
-                    units.Units(random.random(), "assets/images/goblinframe1.png", 20, 12, 33, 10, 5, side))
+                enemy.append(goblin.Goblin(random.random(), side))
             else:
-                friendly.append(
-                    units.Units(random.random(), "assets/images/goblinframe1.png", 20, 12, 33, 10, 5, side))
+                friendly.append(goblin.Goblin(random.random(), side))
             return 2, 0
         elif idx == 3 and elixer >= 5:
             if side:
-                enemy.append(
-                    units.Units(random.random(), "assets/images/giantframe1.png", 200, 25, 45, 4, 12, side))
+                enemy.append(giant.Giant(random.random(), side))
             else:
-                friendly.append(
-                    units.Units(random.random(), "assets/images/giantframe1.png", 200, 25, 45, 4, 12, side))
+                friendly.append(giant.Giant(random.random(), side))
             return 5, 0
         elif idx == 4 and elixer >= 4:
             if side:
-                enemy.append(
-                    units.Units(random.random(), "assets/images/cannoncart.png", 180, 21, 27, 5, 110, side))
+                enemy.append(cannoncart.CannonCart(random.random(), side))
             else:
-                friendly.append(
-                    units.Units(random.random(), "assets/images/cannoncart.png", 180, 21, 27, 5, 110, side))
+                friendly.append(cannoncart.CannonCart(random.random(), side))
             return 4, 0
         elif idx == 5 and elixer >= 5:
             if side:
-                enemy.append(
-                    units.Units(random.random(), "assets/images/wizard.png", 75, 28, 42, 5, 110, side))
+                enemy.append(wizard.Wizard(random.random(), side))
             else:
-                friendly.append(
-                    units.Units(random.random(), "assets/images/wizard.png", 75, 28, 42, 5, 110, side))
+                friendly.append(wizard.Wizard(random.random(), side))
             return 5, 0
         elif idx == 6 and elixer >= 3:
             if side:
@@ -221,7 +206,6 @@ def run_game(selectedCards):
             else:
                 return 3, spellify("assets/images/arrows.png", enemy, 36, 70, getTarget(side, enemy), side)
         return 0, 0
-    
 
     running = True
     while running:

@@ -1,26 +1,11 @@
+from typing import Union
+
 import pygame
 
 
 class Units:
-    def __init__(self, id: float, imagePath: str, health: int, damage: int, attackRate: int, speed: int, range: int,
-                 side: bool, start=None):
-        self.tPriority = False
-        self.splash = 0
-        # Set different sizes for different units
-        if "knight" in imagePath:
-            size = (80, 120)  # Make the knight taller (width, height)
-        elif "giant" in imagePath:
-            self.tPriority = True
-            size = (100, 150)  # Make the giant bigger
-        elif "goblin" in imagePath:
-            size = (40, 60)  # Goblin smaller
-        elif "wizard" in imagePath:
-            self.splash = 30
-            size = (80, 80)
-        elif "cannoncart" in imagePath:
-            size = (60, 60)
-        else:
-            size = (60, 90)  # Default size
+    def __init__(self, yShift: float, imagePath: str, health: int, damage: int, attackRate: int, speed: int, range: int,
+                 side: bool, start=None, size=(60, 90)):
 
         img = pygame.image.load(imagePath).convert_alpha()
         img = pygame.transform.scale(img, size)
@@ -28,7 +13,7 @@ class Units:
             img = pygame.transform.flip(img, True, False)
         self.image = img
 
-        self.id = id
+        self.id = yShift
         self.dead = False
         self.health = health
         self.damage = damage
@@ -40,7 +25,7 @@ class Units:
             self.position = 100 + 720 * side
         self.side = side
         self.attackRate = attackRate
-        self.aCounter = 0
+        self.aCounter = attackRate - 1
         self.curTarget = None
 
     def move(self):
@@ -60,37 +45,23 @@ class Units:
         self.aCounter += 1
         if self.aCounter % self.attackRate == 0:
             target.takeDamage(self.damage)
-            if self.splash > 0:
-                self.splashAttack(enemies)
 
-    def splashAttack(self, enemies: list["Units"]):
-        splashCenter = self.curTarget.position
-        for enemy in enemies:
+    def getTarget(self, enemies: list["Units"]) -> Union["Units", str]:
+        closest = None
+        if self.side:
+            min = 100  # minimal distance from "me"
+        else:
+            min = 820
+        for enemy in enemies:  # enemies is placeholder, list of enemy units
             if not enemy.dead:
                 if self.side:
-                    if -self.splash <= splashCenter - enemy.position <= self.splash:
-                        enemy.takeDamage(self.damage / 2)
+                    if enemy.position > min and -self.range <= self.position - enemy.position <= self.range:
+                        closest = enemy
+                        min = enemy.position
                 else:
-                    if -self.splash <= enemy.position - splashCenter <= self.splash:
-                        enemy.takeDamage(self.damage / 2)
-
-    def getTarget(self, enemies: list["Units"]) -> "Units":
-        closest = None
-        if not self.tPriority:
-            if self.side:
-                min = 100  # minimal distance from "me"
-            else:
-                min = 820
-            for enemy in enemies:  # enemies is placeholder, list of enemy units
-                if not enemy.dead:
-                    if self.side:
-                        if enemy.position > min and -self.range <= self.position - enemy.position <= self.range:
-                            closest = enemy
-                            min = enemy.position
-                    else:
-                        if enemy.position < min and -self.range <= enemy.position - self.position <= self.range:
-                            closest = enemy
-                            min = enemy.position
+                    if enemy.position < min and -self.range <= enemy.position - self.position <= self.range:
+                        closest = enemy
+                        min = enemy.position
         if closest is None:
             if self.side:
                 if self.position - 100 <= self.range:
