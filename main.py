@@ -170,56 +170,56 @@ def run_game(selected_cards):
         if idx == 0 and elixer >= 3:
             if side:
                 Enemy.append(
-                    units.Units(random.random(), "assets/images/knightframe1.png", 70, 10, 10, 5, 10, side))
+                    units.Units(random.random(), "assets/images/knightframe1.png", 170, 20, 36, 5, 12, side))
             else:
                 Friendly.append(
-                    units.Units(random.random(), "assets/images/knightframe1.png", 70, 10, 10, 5, 10, side))
+                    units.Units(random.random(), "assets/images/knightframe1.png", 170, 20, 36, 5, 12, side))
             return 3, 0
         elif idx == 1 and elixer >= 3:
             if side:
                 Enemy.append(
-                    units.Units(random.random(), "assets/images/archersframe1.png", 60, 5, 12, 6, 200, side))
+                    units.Units(random.random(), "assets/images/archersframe1.png", 30, 11, 27, 5, 50, side))
             else:
                 Friendly.append(
-                    units.Units(random.random(), "assets/images/archersframe1.png", 60, 5, 12, 6, 200, side))
+                    units.Units(random.random(), "assets/images/archersframe1.png", 30, 11, 27, 5, 50, side))
             return 3, 0
         elif idx == 2 and elixer >= 2:
             if side:
                 Enemy.append(
-                    units.Units(random.random(), "assets/images/goblinframe1.png", 50, 5, 15, 15, 8, side))
+                    units.Units(random.random(), "assets/images/goblinframe1.png", 20, 12, 33, 10, 5, side))
             else:
                 Friendly.append(
-                    units.Units(random.random(), "assets/images/goblinframe1.png", 50, 5, 15, 15, 8, side))
+                    units.Units(random.random(), "assets/images/goblinframe1.png", 20, 12, 33, 10, 5, side))
             return 2, 0
         elif idx == 3 and elixer >= 5:
             if side:
                 Enemy.append(
-                    units.Units(random.random(), "assets/images/giantframe1.png", 100, 8, 20, 2, 5, side))
+                    units.Units(random.random(), "assets/images/giantframe1.png", 200, 25, 45, 4, 12, side))
             else:
                 Friendly.append(
-                    units.Units(random.random(), "assets/images/giantframe1.png", 100, 8, 20, 2, 5, side))
+                    units.Units(random.random(), "assets/images/giantframe1.png", 200, 25, 45, 4, 12, side))
             return 5, 0
         elif idx == 4 and elixer >= 4:
             if side:
                 Enemy.append(
-                    units.Units(random.random(), "assets/images/cannoncart.png", 80, 12, 15, 6, 120, side))
+                    units.Units(random.random(), "assets/images/cannoncart.png", 180, 21, 27, 5, 55, side))
             else:
                 Friendly.append(
-                    units.Units(random.random(), "assets/images/cannoncart.png", 80, 12, 15, 6, 120, side))
+                    units.Units(random.random(), "assets/images/cannoncart.png", 180, 21, 27, 5, 55, side))
             return 4, 0
         elif idx == 5 and elixer >= 5:
             if side:
                 Enemy.append(
-                    units.Units(random.random(), "assets/images/wizard.png", 60, 20, 16, 8, 220, side))
+                    units.Units(random.random(), "assets/images/wizard.png", 75, 28, 42, 5, 55, side))
             else:
                 Friendly.append(
-                    units.Units(random.random(), "assets/images/wizard.png", 60, 20, 16, 8, 220, side))
+                    units.Units(random.random(), "assets/images/wizard.png", 75, 28, 42, 5, 55, side))
             return 5, 0
         elif idx == 6 and elixer >= 3:
             if side:
-                return 3, spellify("assets/images/arrows.png", Friendly, 50, 125, getTarget(side, Friendly), side)
+                return 3, spellify("assets/images/arrows.png", Friendly, 36, 35, getTarget(side, Friendly), side)
             else:
-                return 3, spellify("assets/images/arrows.png", Enemy, 50, 125, getTarget(side, Enemy), side)
+                return 3, spellify("assets/images/arrows.png", Enemy, 36, 35, getTarget(side, Enemy), side)
         return 0, 0
     
 
@@ -336,44 +336,10 @@ def run_game(selected_cards):
                 botid = selected_cards[random.randint(0, len(selected_cards)-1)]
                 # print(botid, len(selected_cards))
             else:
-                if botid == 0 and elixerB >= 3:
-                    Enemy.append(
-                        units.Units(random.random(), "assets/images/knightframe1.png", 70, 10, 10, 5, 10, True))
-                    elixerB -= 3
-                    botid = -1
-                    print(0, botid)
-                elif botid == 1 and elixerB >= 3:
-                    Enemy.append(
-                        units.Units(random.random(), "assets/images/archersframe1.png", 60, 5, 12, 6, 200, True))
-                    elixerB -= 3
-                    botid = -1
-                    print(1, botid)
-                elif botid == 2 and elixerB >= 2:
-                    Enemy.append(
-                        units.Units(random.random(), "assets/images/goblinframe1.png", 50, 5, 15, 15, 8, True))
-                    elixerB -= 2
-                    botid = -1
-                    print(2, botid)
-                elif botid == 3 and elixerB >= 5:
-                    Enemy.append(
-                        units.Units(random.random(), "assets/images/giantframe1.png", 100, 8, 20, 2, 5, True))
-                    elixerB -= 5
-                    botid = -1
-                    print(3, botid)
-                elif botid == 4 and elixerB >= 4:
-                    Enemy.append(
-                        units.Units(random.random(), "assets/images/cannoncart.png", 80, 12, 15, 6, 120, True))
-                    elixerB -= 4
-                    botid = -1
-                    print(4, botid)
-                elif botid == 5 and elixerB >= 5:
-                    Enemy.append(
-                        units.Units(random.random(), "assets/images/wizard.png", 60, 20, 16, 8, 220, True))
-                    elixerB -= 5
-                    botid = -1
-                elif botid == 6 and elixerB >= 3:
-                    healthA -= spellify("assets/images/arrows.png", Friendly, 50, 125, getTarget(True, Friendly), True)
-                    elixerB -= 3
+                cost, tower = spawn(botid, elixerB, True)
+                elixerB -= cost
+                healthA -= tower
+                if cost > 0:
                     botid = -1
         # spawning units; 1-4 for friendly (left); 7-0 for enemy (right);
         for event in pygame.event.get():
