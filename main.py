@@ -32,6 +32,7 @@ card_images = [
     pygame.transform.scale(pygame.image.load("assets/images/goblincard.webp"), (60, 90)),
     pygame.transform.scale(pygame.image.load("assets/images/giantcard.png"), (60, 90)),
     pygame.transform.scale(pygame.image.load("assets/images/cannoncartcard.webp"), (60, 90)),
+    pygame.transform.scale(pygame.image.load("assets/images/arrowscard.webp"), (60, 90))
 ]
 
 # Scale up the small pixel images
@@ -41,11 +42,37 @@ tower_img = pygame.transform.scale(
 )
 
 
-def spellify(image_path: str, enemies, damage, radius, location):
+def spellify(image_path: str, enemies, damage, radius, location, side=False):
+    img = pygame.image.load(image_path).convert_alpha()
+    window.blit(img, (location, HEIGHT - img.get_height() - 80))
+    pygame.display.update()
     for enemy in enemies:
         if not enemy.dead:
             if abs(location - enemy.position) <= radius:
                 enemy.takeDamage(damage)
+    if side:
+        if location - 100 <= radius:
+            return damage
+    else:
+        if 820 - location <= radius:
+            return damage
+    return 0
+
+
+def getTarget(side, enemies):
+        if side:
+            min = 100  # minimal distance from "me"
+        else:
+            min = 820
+        for enemy in enemies:  # list of enemy units
+            if not enemy.dead:
+                if side:
+                    if enemy.position > min:
+                        min = enemy.position
+                else:
+                    if enemy.position < min:
+                        min = enemy.position
+        return min
 
 
 # Displays the card selection menu and game over menu; QUIT event closes the game\
@@ -285,6 +312,10 @@ def run_game(selected_cards):
                     elixerB -= 4
                     botid = -1
                     print(4, botid)
+                elif botid == 5 and elixerB >= 3:
+                    healthA -= spellify("assets/images/arrows.png", Friendly, 50, 125, getTarget(True, Friendly), True)
+                    elixerB -= 3
+                    botid = -1
         # spawning units; 1-4 for friendly (left); 7-0 for enemy (right);
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -313,6 +344,9 @@ def run_game(selected_cards):
                         Friendly.append(
                             units.Units(random.random(), "assets/images/cannoncart.png", 80, 12, 15, 6, 120, False))
                         elixerA -= 4
+                    elif idx == 5 and elixerA >= 3:
+                        healthB -= spellify("assets/images/arrows.png", Enemy, 50, 125, getTarget(False, Enemy), False)
+                        elixerA -= 3
                 elif event.key == pygame.K_2 and len(selected_cards) > 1:
                     idx = selected_cards[1]
                     if idx == 0 and elixerA >= 3:
@@ -335,6 +369,9 @@ def run_game(selected_cards):
                         Friendly.append(
                             units.Units(random.random(), "assets/images/cannoncart.png", 80, 12, 15, 6, 120, False))
                         elixerA -= 4
+                    elif idx == 5 and elixerA >= 3:
+                        healthB -= spellify("assets/images/arrows.png", Enemy, 50, 125, getTarget(False, Enemy), False)
+                        elixerA -= 3
                 elif event.key == pygame.K_3 and len(selected_cards) > 2:
                     idx = selected_cards[2]
                     if idx == 0 and elixerA >= 3:
@@ -357,6 +394,9 @@ def run_game(selected_cards):
                         Friendly.append(
                             units.Units(random.random(), "assets/images/cannoncart.png", 80, 12, 15, 6, 120, False))
                         elixerA -= 4
+                    elif idx == 5 and elixerA >= 3:
+                        healthB -= spellify("assets/images/arrows.png", Enemy, 50, 125, getTarget(False, Enemy), False)
+                        elixerA -= 3
                 elif event.key == pygame.K_4 and len(selected_cards) > 3:
                     idx = selected_cards[3]
                     if idx == 0 and elixerA >= 3:
@@ -379,6 +419,9 @@ def run_game(selected_cards):
                         Friendly.append(
                             units.Units(random.random(), "assets/images/cannoncart.png", 80, 12, 15, 6, 120, False))
                         elixerA -= 4
+                    elif idx == 5 and elixerA >= 3:
+                        healthB -= spellify("assets/images/arrows.png", Enemy, 50, 125, getTarget(False, Enemy), False)
+                        elixerA -= 3
                 # Enemy card spawning (using keys 7-0)
                 if not bot:
                     if event.key == pygame.K_7 and len(selected_cards) > 0:
@@ -403,6 +446,9 @@ def run_game(selected_cards):
                             Enemy.append(
                                 units.Units(random.random(), "assets/images/cannoncart.png", 80, 12, 15, 6, 120, True))
                             elixerB -= 4
+                        elif idx == 5 and elixerB >= 3:
+                            healthA -= spellify("assets/images/arrows.png", Enemy, 50, 125, getTarget(True, Friendly), True)
+                            elixerB -= 3
                     elif event.key == pygame.K_8 and len(selected_cards) > 1:
                         idx = selected_cards[1]
                         if idx == 0 and elixerB >= 3:
@@ -425,6 +471,9 @@ def run_game(selected_cards):
                             Enemy.append(
                                 units.Units(random.random(), "assets/images/cannoncart.png", 80, 12, 15, 6, 120, True))
                             elixerB -= 4
+                        elif idx == 5 and elixerB >= 3:
+                            healthA -= spellify("assets/images/arrows.png", Enemy, 50, 125, getTarget(True, Friendly), True)
+                            elixerB -= 3
                     elif event.key == pygame.K_9 and len(selected_cards) > 2:
                         idx = selected_cards[2]
                         if idx == 0 and elixerB >= 3:
@@ -447,6 +496,9 @@ def run_game(selected_cards):
                             Enemy.append(
                                 units.Units(random.random(), "assets/images/cannoncart.png", 80, 12, 15, 6, 120, True))
                             elixerB -= 4
+                        elif idx == 5 and elixerB >= 3:
+                            healthA -= spellify("assets/images/arrows.png", Enemy, 50, 125, getTarget(True, Friendly), True)
+                            elixerB -= 3
                     elif event.key == pygame.K_0 and len(selected_cards) > 3:
                         idx = selected_cards[3]
                         if idx == 0 and elixerB >= 3:
@@ -469,6 +521,9 @@ def run_game(selected_cards):
                             Enemy.append(
                                 units.Units(random.random(), "assets/images/cannoncart.png", 80, 12, 15, 6, 120, True))
                             elixerB -= 4
+                        elif idx == 5 and elixerB >= 3:
+                            healthA -= spellify("assets/images/arrows.png", Enemy, 50, 125, getTarget(True, Friendly), True)
+                            elixerB -= 3
 
         # Check for game over
         if healthA <= 0 or healthB <= 0:
