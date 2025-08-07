@@ -38,7 +38,7 @@ card_images = [
 # Scale up the small pixel images
 tower_img = pygame.transform.scale(
     pygame.image.load("assets/images/castle1.png").convert_alpha(),
-    (160, 240)  # width, height (adjust as needed to be bigger than the giant)
+    (160, 240)  # The width and height of the castle image
 )
 
 
@@ -98,7 +98,7 @@ def show_menu(winner=None):
             y = HEIGHT // 2
             for i, img in enumerate(card_images):
                 window.blit(img, (x, y))
-                # Highlight selected card
+                # When the player clicks a card, it will be highlighted.
                 if i == selected_card:
                     pygame.draw.rect(window, (255, 215, 0), (x - 4, y - 4, img.get_width() + 8, img.get_height() + 8),
                                      3)
@@ -131,14 +131,14 @@ def show_menu(winner=None):
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
-            if selecting:
+            if selecting: # Allows the player to select cards
                 if event.type == KEYDOWN:
                     if event.key == pygame.K_LEFT:
-                        selected_card = (selected_card - 1) % len(card_images)
+                        selected_card = (selected_card - 1) % len(card_images) # allows the player move between images to select diffrent cards
                     elif event.key == pygame.K_RIGHT:
                         selected_card = (selected_card + 1) % len(card_images)
                     elif event.key == pygame.K_RETURN:
-                        if selected_card in selected_cards:
+                        if selected_card in selected_cards: # uses diffrent logic to select and deselect cards
                             selected_cards.remove(selected_card)
                         elif len(selected_cards) < 4:
                             selected_cards.append(selected_card)
@@ -150,7 +150,7 @@ def show_menu(winner=None):
                             bot = 0
             else:
                 if event.type == KEYDOWN and event.key == pygame.K_SPACE:
-                    return None  # Restart game
+                    return None  # Restarts game when someone loses
 
 
 # runs the game; QUIT event returns user(s) to menu
@@ -222,7 +222,7 @@ def run_game(selected_cards):
             window.blit(img, (x, y))
             x += img.get_width() + card_spacing
 
-        # Update and draw all friendly units (knights)
+        # updates and draws the freindly units
         for unit in Friendly:
             if unit.dead:
                 Friendly.remove(unit)
@@ -244,7 +244,7 @@ def run_game(selected_cards):
         window.blit(timer_text, (WIDTH // 2 - timer_text.get_width() // 2, 10))
 
         pygame.display.update()
-        # The following block was incorrectly indented; fix indentation
+        #  Controls the time passed in the game
         timePassed = clock.tick(30)
         timeSec = timePassed / 1000.0
         timer += timeSec
