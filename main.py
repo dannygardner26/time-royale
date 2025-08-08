@@ -4,7 +4,8 @@ import pygame
 import sys
 from pygame.locals import *
 
-from assets.units import archer, cannoncart, giant, goblin, knight, wizard
+# Add new card step 1
+from assets.units import archer, cannoncart, giant, goblin, knight, wizard, valkyrie
 
 # Set up the game
 pygame.init()
@@ -19,6 +20,7 @@ background = pygame.image.load("assets/images/background.png")
 font = pygame.font.SysFont(None, 32)
 gameTime = 45  # seconds
 
+# Add new card step 2
 cardImages = [
     pygame.transform.scale(pygame.image.load("assets/images/knightcard.png"), (60, 90)),
     pygame.transform.scale(pygame.image.load("assets/images/archercard.png"), (60, 90)),
@@ -26,6 +28,7 @@ cardImages = [
     pygame.transform.scale(pygame.image.load("assets/images/giantcard.png"), (60, 90)),
     pygame.transform.scale(pygame.image.load("assets/images/cannoncartcard.webp"), (60, 90)),
     pygame.transform.scale(pygame.image.load("assets/images/wizardcard.webp"), (60, 90)),
+    pygame.transform.scale(pygame.image.load("assets/images/valkyriecard.webp"), (60, 90)),
     pygame.transform.scale(pygame.image.load("assets/images/arrowscard.webp"), (60, 90))
 ]
 
@@ -167,6 +170,7 @@ def run_game(selectedCards):
     window.blit(background, (0, 0))
     pygame.display.update()
 
+    # Add new card step 3
     def spawn(idx, elixir, side):
         if idx == 0 and elixir >= 3:
             if side:
@@ -204,7 +208,13 @@ def run_game(selectedCards):
             else:
                 friendly.append(wizard.Wizard(random.random(), side))
             return 5, 0
-        elif idx == 6 and elixir >= 3:
+        elif idx == 6 and elixir >= 4:
+            if side:
+                enemy.append(valkyrie.Valkyrie(random.random(), side))
+            else:
+                friendly.append(valkyrie.Valkyrie(random.random(), side))
+            return 4, 0
+        elif idx == 7 and elixir >= 3:
             if side:
                 return 3, spellify("assets/images/arrows.png", friendly, 36, 70, getTarget(side, friendly), side)
             else:
@@ -306,7 +316,6 @@ def run_game(selectedCards):
             elixirA = min(elixirA, maxElixir)
             elixirB = min(elixirB, maxElixir)
             elixirTime -= 1 / amount
-            print(elixirA, elixirB)
 
         timeLeft -= timeSec
         if timeLeft <= 0 or healthA <= 0 or healthB <= 0:
@@ -323,7 +332,6 @@ def run_game(selectedCards):
         if bot > 0:
             if botId < 0:
                 botId = selectedCards[random.randint(0, len(selectedCards)-1)]
-                # print(botid, len(selected_cards))
             else:
                 cost, tower = spawn(botId, elixirB, True)
                 elixirB -= cost

@@ -39,7 +39,6 @@ class Units:
         self.health -= amount
         if self.health <= 0:
             self.dead = True
-            # print(self.id, "deaded") # debug code 
 
     def attack(self, target: "Units", enemies: list["Units"]):
         self.aCounter += 1
@@ -73,13 +72,10 @@ class Units:
     def inRange(self, enemy: "Units") -> bool:
         if self.side:
             if 0 <= self.position - enemy.position <= self.range:
-                # print(self.id, "case uno")
                 return True
         else:
             if 0 <= enemy.position - self.position <= self.range:
-                # print(self.id, "case dos")
                 return True
-        # print(self.id, "case tres")
         return False
 
     def update(self, enemies: list["Units"]) -> int:
@@ -92,16 +88,13 @@ class Units:
                         return self.damage
                 else:
                     if self.inRange(self.curTarget):
-                        # print(self.id, "a")
                         self.attack(self.curTarget, enemies)
                         if self.curTarget.dead:
                             self.curTarget = None
                     else:
                         self.curTarget = None
-                        # print(self.id, "b")
             else:
                 self.curTarget = self.getTarget(enemies)
-                # print(self.id, self.curTarget)
                 if self.curTarget is None:
                     self.move()
         return 0
