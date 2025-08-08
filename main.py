@@ -5,7 +5,7 @@ import sys
 from pygame.locals import *
 
 # Add new card step 1
-from assets.units import archer, cannoncart, giant, goblin, knight, wizard, valkyrie
+from assets.units import archer, cannoncart, giant, goblin, knight, wizard, valkyrie, arrows
 
 # Set up the game
 pygame.init()
@@ -216,6 +216,7 @@ def run_game(selectedCards):
             return 4, 0
         elif idx == 7 and elixir >= 3:
             if side:
+                enemy.append(arrows.Arrows())
                 return 3, spellify("assets/images/arrows.png", friendly, 36, 70, getTarget(side, friendly), side)
             else:
                 return 3, spellify("assets/images/arrows.png", enemy, 36, 70, getTarget(side, enemy), side)
@@ -304,9 +305,9 @@ def run_game(selectedCards):
         elixirTime += timeSec
         # player.x += player.move * timeSec
         if elixirTime >= 1 / amount:
-            elixirA += 1
+            elixirA += 1999
             if bot == 0:
-                elixirB += 1
+                elixirB += 1999
             elif bot == 1:
                 elixirB += 0.75
             elif bot == 2:

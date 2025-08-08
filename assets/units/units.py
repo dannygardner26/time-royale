@@ -70,22 +70,18 @@ class Units:
         return closest
 
     def inRange(self, enemy: "Units") -> bool:
-        if self.side:
-            if 0 <= self.position - enemy.position <= self.range:
-                return True
-        else:
-            if 0 <= enemy.position - self.position <= self.range:
-                return True
+        if abs(self.position - enemy.position) <= self.range:
+            return True
         return False
 
-    def update(self, enemies: list["Units"]) -> int:
+    def update(self, enemies: list["Units"]) -> Union[int, list["Units"]]:
         # pass a list of enemy units to this function
         if not self.dead:
             if self.curTarget is not None:
                 if self.curTarget == 'A' or self.curTarget == 'B':
                     self.aCounter += 1
                     if self.aCounter % self.attackRate == 0:
-                        return self.damage
+                        return self.damage, []
                 else:
                     if self.inRange(self.curTarget):
                         self.attack(self.curTarget, enemies)
@@ -97,4 +93,4 @@ class Units:
                 self.curTarget = self.getTarget(enemies)
                 if self.curTarget is None:
                     self.move()
-        return 0
+        return 0, []
