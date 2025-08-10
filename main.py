@@ -5,7 +5,8 @@ import sys
 from pygame.locals import *
 
 # Add new card step 1
-from assets.units import archer, cannoncart, giant, goblin, knight, wizard, valkyrie, arrows
+from assets.units import spawn
+from assets.units import archer, cannoncart, giant, goblin, knight, wizard, valkyrie, arrows, goblinbarrel
 
 # Set up the game
 pygame.init()
@@ -29,7 +30,8 @@ cardImages = [
     pygame.transform.scale(pygame.image.load("assets/images/cannoncartcard.webp"), (60, 90)),
     pygame.transform.scale(pygame.image.load("assets/images/wizardcard.webp"), (60, 90)),
     pygame.transform.scale(pygame.image.load("assets/images/valkyriecard.webp"), (60, 90)),
-    pygame.transform.scale(pygame.image.load("assets/images/arrowscard.webp"), (60, 90))
+    pygame.transform.scale(pygame.image.load("assets/images/arrowscard.webp"), (60, 90)),
+    pygame.transform.scale(pygame.image.load("assets/images/goblinbarrelcard.webp"), (60, 90))
 ]
 
 # Scale up the small pixel images
@@ -37,23 +39,6 @@ towerImg = pygame.transform.scale(
     pygame.image.load("assets/images/castle1.png").convert_alpha(),
     (160, 240)  # The width and height of the castle image
 )
-
-
-def spellify(image_path: str, enemies, damage, radius, location, side=False):
-    img = pygame.image.load(image_path).convert_alpha()
-    window.blit(img, (location, HEIGHT - img.get_height() - 80))
-    pygame.display.update()
-    for enemy in enemies:
-        if not enemy.dead:
-            if abs(location - enemy.position) <= radius:
-                enemy.takeDamage(damage)
-    if side:
-        if location - 100 <= radius:
-            return damage
-    else:
-        if 820 - location <= radius:
-            return damage
-    return 0
 
 
 def getTarget(side, enemies):
@@ -171,56 +156,62 @@ def run_game(selectedCards):
     pygame.display.update()
 
     # Add new card step 3
-    def spawn(idx, elixir, side):
+    def deploy(idx, elixir, side) -> int:
         if idx == 0 and elixir >= 3:
             if side:
                 enemy.append(knight.Knight(random.random(), side))
             else:
                 friendly.append(knight.Knight(random.random(), side))
-            return 3, 0
+            return 3
         elif idx == 1 and elixir >= 3:
             if side:
                 enemy.append(archer.Archer(random.random(), side))
             else:
                 friendly.append(archer.Archer(random.random(), side))
-            return 3, 0
+            return 3
         elif idx == 2 and elixir >= 2:
             if side:
                 enemy.append(goblin.Goblin(random.random(), side))
             else:
                 friendly.append(goblin.Goblin(random.random(), side))
-            return 2, 0
+            return 2
         elif idx == 3 and elixir >= 5:
             if side:
                 enemy.append(giant.Giant(random.random(), side))
             else:
                 friendly.append(giant.Giant(random.random(), side))
-            return 5, 0
+            return 5
         elif idx == 4 and elixir >= 4:
             if side:
                 enemy.append(cannoncart.CannonCart(random.random(), side))
             else:
                 friendly.append(cannoncart.CannonCart(random.random(), side))
-            return 4, 0
+            return 4
         elif idx == 5 and elixir >= 5:
             if side:
                 enemy.append(wizard.Wizard(random.random(), side))
             else:
                 friendly.append(wizard.Wizard(random.random(), side))
-            return 5, 0
+            return 5
         elif idx == 6 and elixir >= 4:
             if side:
                 enemy.append(valkyrie.Valkyrie(random.random(), side))
             else:
                 friendly.append(valkyrie.Valkyrie(random.random(), side))
-            return 4, 0
+            return 4
         elif idx == 7 and elixir >= 3:
             if side:
-                enemy.append(arrows.Arrows())
-                return 3, spellify("assets/images/arrows.png", friendly, 36, 70, getTarget(side, friendly), side)
+                enemy.append(arrows.Arrows(getTarget(side, friendly), side))
             else:
-                return 3, spellify("assets/images/arrows.png", enemy, 36, 70, getTarget(side, enemy), side)
-        return 0, 0
+                friendly.append(arrows.Arrows(getTarget(side, enemy), side))
+            return 3
+        elif idx == 8 and elixir >= 5:
+            if side:
+                enemy.append(goblinbarrel.GoblinBarrel(getTarget(side, friendly), side))
+            else:
+                friendly.append(goblinbarrel.GoblinBarrel(getTarget(side, enemy), side))
+            return 5
+        return 0
 
     running = True
     while running:
@@ -280,13 +271,17 @@ def run_game(selectedCards):
                 friendly.remove(unit)
             else:
                 healthB -= unit.update(enemy)
+                if isinstance(unit, spawn.Spawn):
+                    unit.spawnUnits(friendly)
                 window.blit(unit.image, (unit.position, HEIGHT - unit.image.get_height() - 80 - (unit.id * 5)))
         for unit in enemy:
             if unit.dead:
                 enemy.remove(unit)
             else:
                 healthA -= unit.update(friendly)
-            window.blit(unit.image, (unit.position, HEIGHT - unit.image.get_height() - 80 - (unit.id * 5)))
+                if isinstance(unit, spawn.Spawn):
+                    unit.spawnUnits(enemy)
+                window.blit(unit.image, (unit.position, HEIGHT - unit.image.get_height() - 80 - (unit.id * 5)))
 
         # Activates double elixir after time reaches below 20
         if timer >= 20:
@@ -305,9 +300,9 @@ def run_game(selectedCards):
         elixirTime += timeSec
         # player.x += player.move * timeSec
         if elixirTime >= 1 / amount:
-            elixirA += 1999
+            elixirA += 1
             if bot == 0:
-                elixirB += 1999
+                elixirB += 1
             elif bot == 1:
                 elixirB += 0.75
             elif bot == 2:
@@ -334,9 +329,8 @@ def run_game(selectedCards):
             if botId < 0:
                 botId = selectedCards[random.randint(0, len(selectedCards)-1)]
             else:
-                cost, tower = spawn(botId, elixirB, True)
+                cost = deploy(botId, elixirB, True)
                 elixirB -= cost
-                healthA -= tower
                 if cost > 0:
                     botId = -1
         # spawning units; 1-4 for friendly (left); 7-0 for enemy (right);
@@ -347,46 +341,38 @@ def run_game(selectedCards):
                 # Only allow spawning the cards that were selected, using 1-4
                 if event.key == pygame.K_1 and len(selectedCards) > 0:
                     idx = selectedCards[0]
-                    cost, tower = spawn(idx, elixirA, False)
+                    cost = deploy(idx, elixirA, False)
                     elixirA -= cost
-                    healthB -= tower
                 elif event.key == pygame.K_2 and len(selectedCards) > 1:
                     idx = selectedCards[1]
-                    cost, tower = spawn(idx, elixirA, False)
+                    cost = deploy(idx, elixirA, False)
                     elixirA -= cost
-                    healthB -= tower
                 elif event.key == pygame.K_3 and len(selectedCards) > 2:
                     idx = selectedCards[2]
-                    cost, tower = spawn(idx, elixirA, False)
+                    cost = deploy(idx, elixirA, False)
                     elixirA -= cost
-                    healthB -= tower
                 elif event.key == pygame.K_4 and len(selectedCards) > 3:
                     idx = selectedCards[3]
-                    cost, tower = spawn(idx, elixirA, False)
+                    cost = deploy(idx, elixirA, False)
                     elixirA -= cost
-                    healthB -= tower
                 # Enemy card spawning (using keys 7-0)
                 if bot == 0:
                     if event.key == pygame.K_7 and len(selectedCards) > 0:
                         idx = selectedCards[0]
-                        cost, tower = spawn(idx, elixirB, True)
+                        cost = deploy(idx, elixirB, True)
                         elixirB -= cost
-                        healthA -= tower
                     elif event.key == pygame.K_8 and len(selectedCards) > 1:
                         idx = selectedCards[1]
-                        cost, tower = spawn(idx, elixirB, True)
+                        cost = deploy(idx, elixirB, True)
                         elixirB -= cost
-                        healthA -= tower
                     elif event.key == pygame.K_9 and len(selectedCards) > 2:
                         idx = selectedCards[2]
-                        cost, tower = spawn(idx, elixirB, True)
+                        cost = deploy(idx, elixirB, True)
                         elixirB -= cost
-                        healthA -= tower
                     elif event.key == pygame.K_0 and len(selectedCards) > 3:
                         idx = selectedCards[3]
-                        cost, tower = spawn(idx, elixirB, True)
+                        cost = deploy(idx, elixirB, True)
                         elixirB -= cost
-                        healthA -= tower
 
         # Check for game over
         if healthA <= 0 or healthB <= 0:
